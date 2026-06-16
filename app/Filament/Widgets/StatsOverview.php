@@ -70,18 +70,20 @@ class StatsOverview extends BaseWidget
         $mingguKe = $hariKe > 0 ? ceil($hariKe / 7) : 0;
         $hariTersisa = max(0, $totalHariMagang - $hariKe);
 
+        $todayIcon = $totalHariIni > 0 ? 'heroicon-m-check-badge' : 'heroicon-m-clock';
+        $todayColor = $totalHariIni > 0 ? 'success' : 'warning';
+
         return [
             Stat::make('Hari Magang', "Hari ke-{$hariKe}")
                 ->description("Minggu ke-{$mingguKe} dari {$totalHariMagang} hari")
                 ->descriptionIcon('heroicon-m-calendar-days')
                 ->color('primary')
-                ->extraAttributes(['class' => 'relative overflow-hidden'])
                 ->chart([max(0, $hariKe - 6), max(0, $hariKe - 5), max(0, $hariKe - 4), max(0, $hariKe - 3), max(0, $hariKe - 2), max(0, $hariKe - 1), $hariKe]),
 
             Stat::make('Progres Waktu', "{$progresPercent}%")
                 ->description($hariTersisa > 0 ? "{$hariTersisa} hari tersisa" : 'Selesai')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([10, 20, $progresPercent])
+                ->chart([10, 30, $progresPercent])
                 ->color(match (true) {
                     $progresPercent >= 100 => 'success',
                     $progresPercent >= 75 => 'warning',
@@ -92,13 +94,12 @@ class StatsOverview extends BaseWidget
             Stat::make('Total Kegiatan', $totalKegiatan)
                 ->description($isMahasiswa ? 'Logbook pribadi Anda' : 'Logbook seluruh mahasiswa')
                 ->descriptionIcon('heroicon-m-document-text')
-                ->color('success')
-                ->extraAttributes(['class' => 'relative overflow-hidden']),
+                ->color('success'),
 
             Stat::make('Kegiatan Hari Ini', "{$totalHariIni} Input")
                 ->description($totalHariIni > 0 ? 'Sudah mengisi logbook hari ini' : 'Belum ada logbook hari ini')
-                ->descriptionIcon($totalHariIni > 0 ? 'heroicon-m-check-badge' : 'heroicon-m-clock')
-                ->color($totalHariIni > 0 ? 'success' : 'danger'),
+                ->descriptionIcon($todayIcon)
+                ->color($todayColor),
 
             Stat::make('Total Dokumentasi', $totalDokumentasi)
                 ->description($isMahasiswa ? 'Dokumentasi terunggah' : 'Galeri dokumentasi tim')
@@ -106,7 +107,7 @@ class StatsOverview extends BaseWidget
                 ->color('warning'),
 
             Stat::make('Total Anggota', "{$totalAnggota} Mahasiswa")
-                ->description('Prodi Bisnis Digital FEB UNM')
+                ->description('Bisnis Digital FEB UNM')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('info'),
         ];
