@@ -31,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logo-mark.svg'))
             ->brandLogoHeight('2rem')
             ->favicon(asset('images/logo-mark.svg'))
-            ->font('Plus Jakarta Sans', provider: 'google')
+            ->font('Plus Jakarta Sans')
             ->colors([
                 'primary' => [
                     50 => '240, 244, 248',
