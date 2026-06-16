@@ -65,8 +65,12 @@ class LoginHistoryResource extends Resource
                     ->label('Pengguna')
                     ->relationship('user', 'name'),
             ])
+            ->defaultSort('login_at', 'desc')
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->label('Lihat'),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

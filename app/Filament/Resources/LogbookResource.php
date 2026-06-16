@@ -29,11 +29,23 @@ class LogbookResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Logbook::where('status', 'Menunggu Review')->count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Section::make('Informasi Kegiatan')
+                    ->description('Lengkapi detail kegiatan magang harian')
+                    ->icon('heroicon-o-information-circle')
                     ->schema([
                         Forms\Components\Select::make('user_id')
                             ->label('Nama Mahasiswa')
@@ -43,7 +55,7 @@ class LogbookResource extends Resource
                             ->preload()
                             ->default(fn () => Auth::user()->isMahasiswa() ? Auth::id() : null)
                             ->disabled(fn () => Auth::user()->isMahasiswa())
-                            ->dehydrated(), // ensure value is sent even if disabled
+                            ->dehydrated(),
 
                         Forms\Components\DatePicker::make('tanggal')
                             ->label('Tanggal Kegiatan')
@@ -65,7 +77,8 @@ class LogbookResource extends Resource
                         Forms\Components\Select::make('kategori_kegiatan')
                             ->label('Kategori Kegiatan')
                             ->options(array_combine(Logbook::KATEGORI, Logbook::KATEGORI))
-                            ->required(),
+                            ->required()
+                            ->searchable(),
 
                         Forms\Components\TextInput::make('judul_kegiatan')
                             ->label('Judul Kegiatan')
@@ -78,7 +91,14 @@ class LogbookResource extends Resource
                             ->label('Deskripsi Detail Kegiatan')
                             ->required()
                             ->columnSpanFull(),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
 
+                Forms\Components\Section::make('Waktu & Status')
+                    ->description('Atur jam kegiatan dan status review')
+                    ->icon('heroicon-o-clock')
+                    ->schema([
                         Forms\Components\TimePicker::make('jam_mulai')
                             ->label('Jam Mulai')
                             ->required()
@@ -99,10 +119,16 @@ class LogbookResource extends Resource
                             ->options(array_combine(Logbook::STATUS, Logbook::STATUS))
                             ->default('Draft')
                             ->required(),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
 
-                        // Multi upload images via relationship
+                Forms\Components\Section::make('Dokumentasi')
+                    ->description('Upload foto kegiatan pendukung')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
                         Forms\Components\FileUpload::make('photos')
-                            ->label('Dokumentasi Kegiatan (Foto)')
+                            ->label('')
                             ->multiple()
                             ->image()
                             ->directory('logbooks')
@@ -110,7 +136,7 @@ class LogbookResource extends Resource
                             ->helperText('Bisa upload lebih dari 1 foto. Maksimal 5MB per file.')
                             ->columnSpanFull(),
                     ])
-                    ->columns(2)
+                    ->collapsible(),
             ]);
     }
 
@@ -184,11 +210,21 @@ class LogbookResource extends Resource
                 Tables\Filters\SelectFilter::make('kategori_kegiatan')
                     ->label('Kategori')
                     ->options(array_combine(Logbook::KATEGORI, Logbook::KATEGORI)),
+
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(array_combine(Logbook::STATUS, Logbook::STATUS)),
             ])
+            ->defaultSort('tanggal', 'desc')
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->label('Lihat'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Hapus'),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -199,7 +235,6 @@ class LogbookResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // Eager load relations to prevent N+1 queries
         $query = parent::getEloquentQuery()->with(['user', 'photos']);
         if (Auth::user()->isMahasiswa()) {
             $query->where('user_id', Auth::id());

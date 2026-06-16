@@ -97,10 +97,16 @@ class AchievementResource extends Resource
                     ->relationship('user', 'name', fn (Builder $query) => $query->role('mahasiswa'))
                     ->visible(fn () => !Auth::user()->isMahasiswa()),
             ])
+            ->defaultSort('tanggal', 'desc')
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->label('Lihat'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Hapus'),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

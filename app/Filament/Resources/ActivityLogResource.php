@@ -75,7 +75,10 @@ class ActivityLogResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->label('Lihat Detail'),
+                ]),
             ]);
     }
 

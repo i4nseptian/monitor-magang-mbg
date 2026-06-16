@@ -29,6 +29,11 @@ class MentorNoteResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) \App\Models\MentorNote::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -124,10 +129,16 @@ class MentorNoteResource extends Resource
                     ->label('Status Evaluasi')
                     ->options(array_combine(MentorNote::STATUS, MentorNote::STATUS)),
             ])
+            ->defaultSort('tanggal', 'desc')
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->label('Lihat'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Hapus'),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
