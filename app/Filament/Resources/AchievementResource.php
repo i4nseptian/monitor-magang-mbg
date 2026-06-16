@@ -96,6 +96,27 @@ class AchievementResource extends Resource
                     ->label('Mahasiswa')
                     ->relationship('user', 'name', fn (Builder $query) => $query->role('mahasiswa'))
                     ->visible(fn () => !Auth::user()->isMahasiswa()),
+
+                Tables\Filters\Filter::make('tanggal')
+                    ->form([
+                        Forms\Components\DatePicker::make('tanggal_dari')
+                            ->label('Dari Tanggal')
+                            ->native(false),
+                        Forms\Components\DatePicker::make('tanggal_hingga')
+                            ->label('Hingga Tanggal')
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['tanggal_dari'], fn (Builder $query, $date) => $query->whereDate('tanggal', '>=', $date))
+                            ->when($data['tanggal_hingga'], fn (Builder $query, $date) => $query->whereDate('tanggal', '<=', $date));
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if (!$data['tanggal_dari'] && !$data['tanggal_hingga']) return null;
+                        $dari = $data['tanggal_dari'] ? \Carbon\Carbon::parse($data['tanggal_dari'])->format('d/m/Y') : '...';
+                        $hingga = $data['tanggal_hingga'] ? \Carbon\Carbon::parse($data['tanggal_hingga'])->format('d/m/Y') : '...';
+                        return "{$dari} – {$hingga}";
+                    }),
             ])
             ->defaultSort('tanggal', 'desc')
             ->actions([

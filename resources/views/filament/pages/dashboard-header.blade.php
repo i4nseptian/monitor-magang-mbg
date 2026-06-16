@@ -11,7 +11,7 @@
     }
 @endphp
 
-<div class="mb-6">
+<div class="mb-6 space-y-4">
     <div class="relative overflow-hidden rounded-2xl border border-primary-200/60 bg-gradient-to-br from-primary-800 via-primary-800 to-primary-900 shadow-sm dark:border-primary-800 dark:from-primary-950 dark:to-gray-950">
         <div class="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/5"></div>
         <div class="pointer-events-none absolute -bottom-10 right-24 h-28 w-28 rounded-full bg-sky-400/10"></div>
@@ -26,6 +26,12 @@
                     @if ($hariKe > 0)
                         <span class="inline-flex items-center rounded-md bg-sky-400/20 px-2.5 py-1 text-[11px] font-medium tabular-nums text-sky-100">
                             Hari ke-{{ $hariKe }}
+                        </span>
+                    @endif
+                    @if (isset($hariTersisa) && $hariTersisa > 0)
+                        <span class="inline-flex items-center gap-1 rounded-md bg-amber-400/20 px-2.5 py-1 text-[11px] font-medium tabular-nums text-amber-100">
+                            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Sisa {{ $hariTersisa }} hari
                         </span>
                     @endif
                 </div>
@@ -56,4 +62,38 @@
             </div>
         </div>
     </div>
+
+    {{-- Upcoming Deadlines --}}
+    @if(isset($deadlines) && $deadlines->isNotEmpty())
+        <div class="rounded-xl border border-amber-200/60 bg-gradient-to-br from-amber-50/80 to-white p-4 dark:border-amber-900/40 dark:from-amber-950/20 dark:to-gray-900/20">
+            <div class="mb-3 flex items-center gap-2">
+                <x-filament::icon icon="heroicon-o-bell-alert" class="h-4 w-4 text-amber-600" />
+                <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">Tenggat Mendatang</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                @foreach ($deadlines as $item)
+                    <div class="flex items-center gap-2 rounded-lg border border-amber-200/60 bg-white/70 px-3 py-2 text-xs shadow-sm dark:border-amber-800/50 dark:bg-gray-800/60">
+                        @if ($item['type'] === 'target')
+                            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-100 text-[10px] text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">T</span>
+                        @else
+                            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sky-100 text-[10px] text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">P</span>
+                        @endif
+                        <div class="min-w-0">
+                            <p class="truncate font-medium text-gray-800 dark:text-gray-200 max-w-[140px]">{{ $item['title'] }}</p>
+                            <p class="text-[10px] text-gray-400">
+                                @if ($item['remaining_days'] !== null && $item['remaining_days'] > 0)
+                                    {{ $item['remaining_days'] }} hari lagi
+                                @elseif ($item['remaining_days'] === 0)
+                                    Hari ini!
+                                @endif
+                                @if ($item['user_name'])
+                                    · {{ $item['user_name'] }}
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
 </div>

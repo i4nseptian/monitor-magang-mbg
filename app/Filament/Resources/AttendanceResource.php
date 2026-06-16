@@ -132,13 +132,41 @@ class AttendanceResource extends Resource
 
                 Tables\Filters\Filter::make('tanggal')
                     ->form([
-                        Forms\Components\DatePicker::make('tanggal_dari')->label('Dari Tanggal'),
-                        Forms\Components\DatePicker::make('tanggal_hingga')->label('Hingga Tanggal'),
+                        Forms\Components\DatePicker::make('tanggal_dari')
+                            ->label('Dari Tanggal')
+                            ->native(false),
+                        Forms\Components\DatePicker::make('tanggal_hingga')
+                            ->label('Hingga Tanggal')
+                            ->native(false),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when($data['tanggal_dari'], fn (Builder $query, $date) => $query->whereDate('tanggal', '>=', $date))
                             ->when($data['tanggal_hingga'], fn (Builder $query, $date) => $query->whereDate('tanggal', '<=', $date));
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if (!$data['tanggal_dari'] && !$data['tanggal_hingga']) return null;
+                        $dari = $data['tanggal_dari'] ? \Carbon\Carbon::parse($data['tanggal_dari'])->format('d/m/Y') : '...';
+                        $hingga = $data['tanggal_hingga'] ? \Carbon\Carbon::parse($data['tanggal_hingga'])->format('d/m/Y') : '...';
+                        return "{$dari} – {$hingga}";
+                    }),
+
+                Tables\Filters\SelectFilter::make('preset')
+                    ->label('Rentang')
+                    ->options([
+                        'hari_ini' => 'Hari Ini',
+                        '7_hari' => '7 Hari Terakhir',
+                        '30_hari' => '30 Hari Terakhir',
+                        'bulan_ini' => 'Bulan Ini',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return match ($data['value'] ?? null) {
+                            'hari_ini' => $query->whereDate('tanggal', now()),
+                            '7_hari' => $query->where('tanggal', '>=', now()->subDays(7)),
+                            '30_hari' => $query->where('tanggal', '>=', now()->subDays(30)),
+                            'bulan_ini' => $query->whereMonth('tanggal', now()->month)->whereYear('tanggal', now()->year),
+                            default => $query,
+                        };
                     }),
             ])
             ->defaultSort('tanggal', 'desc')

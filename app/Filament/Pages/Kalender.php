@@ -96,8 +96,22 @@ class Kalender extends Page
             $currentDay->addDay();
         }
 
+        // Group days by week (for mobile agenda view)
+        $weeksGrouped = [];
+        $currentWeek = [];
+        foreach ($days as $i => $day) {
+            $currentWeek[] = $day;
+            if ($day['date']->dayOfWeek === Carbon::SUNDAY || $i === count($days) - 1) {
+                if (!empty($currentWeek)) {
+                    $weeksGrouped[] = $currentWeek;
+                    $currentWeek = [];
+                }
+            }
+        }
+
         return [
             'days' => $days,
+            'weeksGrouped' => $weeksGrouped,
             'weeks' => ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
         ];
     }

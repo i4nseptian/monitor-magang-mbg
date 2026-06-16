@@ -119,6 +119,27 @@ class ProjectResource extends Resource
                 Tables\Filters\SelectFilter::make('status_project')
                     ->label('Status')
                     ->options(array_combine(Project::STATUS_PROJECT, Project::STATUS_PROJECT)),
+
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        Forms\Components\DatePicker::make('tanggal_dari')
+                            ->label('Dari Tanggal')
+                            ->native(false),
+                        Forms\Components\DatePicker::make('tanggal_hingga')
+                            ->label('Hingga Tanggal')
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['tanggal_dari'], fn (Builder $query, $date) => $query->whereDate('created_at', '>=', $date))
+                            ->when($data['tanggal_hingga'], fn (Builder $query, $date) => $query->whereDate('created_at', '<=', $date));
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if (!$data['tanggal_dari'] && !$data['tanggal_hingga']) return null;
+                        $dari = $data['tanggal_dari'] ? \Carbon\Carbon::parse($data['tanggal_dari'])->format('d/m/Y') : '...';
+                        $hingga = $data['tanggal_hingga'] ? \Carbon\Carbon::parse($data['tanggal_hingga'])->format('d/m/Y') : '...';
+                        return "{$dari} – {$hingga}";
+                    }),
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([

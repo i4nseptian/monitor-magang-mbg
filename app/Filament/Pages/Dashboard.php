@@ -3,6 +3,8 @@
 namespace App\Filament\Pages;
 
 use App\Models\InternshipSetting;
+use App\Models\Project;
+use App\Models\Target;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -59,10 +61,78 @@ class Dashboard extends BaseDashboard
             default => 'Pengguna',
         };
 
+        // Deadline data: upcoming targets & projects nearing deadline
+        $hariTersisa = max(0, $totalHari - $hariKe);
+        $deadlines = collect();
+
+        if (!$user->isMahasiswa()) {
+            // Mentor/Admin: ambil semua target dengan deadline
+            $upcomingTargets = Target::with('user')
+                ->whereNotNull('target_date')
+                ->where('target_date', '>=', $now->toDateString())
+                ->where('progress', '<', 100)
+                ->orderBy('target_date')
+                ->limit(5)
+                ->get();
+            $deadlines = $deadlines->merge($upcomingTargets->map(fn ($t) => [
+                'type' => 'target',
+                'title' => $t->target_name,
+                'date' => $t->target_date,
+                'user_name' => $t->user?->name,
+                'remaining_days' => $now->diffInDays($t->target_date, false) + 1,
+            ]));
+
+            $upcomingProjects = Project::with('user')
+                ->where('status_project', 'Sedang Dikerjakan')
+                ->orderBy('created_at')
+                ->limit(5)
+                ->get();
+            $deadlines = $deadlines->merge($upcomingProjects->map(fn ($p) => [
+                'type' => 'project',
+                'title' => $p->judul,
+                'date' => null,
+                'user_name' => $p->user?->name,
+                'remaining_days' => null,
+            ]));
+        } else {
+            $upcomingTargets = Target::where('user_id', $user->id)
+                ->whereNotNull('target_date')
+                ->where('target_date', '>=', $now->toDateString())
+                ->where('progress', '<', 100)
+                ->orderBy('target_date')
+                ->limit(5)
+                ->get();
+            $deadlines = $deadlines->merge($upcomingTargets->map(fn ($t) => [
+                'type' => 'target',
+                'title' => $t->target_name,
+                'date' => $t->target_date,
+                'user_name' => null,
+                'remaining_days' => $now->diffInDays($t->target_date, false) + 1,
+            ]));
+
+            $upcomingProjects = Project::where('user_id', $user->id)
+                ->where('status_project', 'Sedang Dikerjakan')
+                ->orderBy('created_at')
+                ->limit(5)
+                ->get();
+            $deadlines = $deadlines->merge($upcomingProjects->map(fn ($p) => [
+                'type' => 'project',
+                'title' => $p->judul,
+                'date' => null,
+                'user_name' => null,
+                'remaining_days' => null,
+            ]));
+        }
+
+        $deadlines = $deadlines->sortBy('remaining_days')->take(5);
+
         return view('filament.pages.dashboard-header', [
             'user' => $user,
             'roleLabel' => $roleLabel,
             'hariKe' => $hariKe,
+            'hariTersisa' => $hariTersisa,
+            'totalHari' => $totalHari,
+            'deadlines' => $deadlines,
         ]);
     }
 }
