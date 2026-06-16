@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogResource extends Resource
@@ -76,6 +77,11 @@ class ActivityLogResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['causer']);
     }
 
     public static function canCreate(): bool

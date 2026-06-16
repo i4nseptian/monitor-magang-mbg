@@ -75,6 +75,11 @@ class LoginHistoryResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['user']);
+    }
+
     public static function canCreate(): bool
     {
         return false; // Login histories are system-generated only

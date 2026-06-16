@@ -150,6 +150,11 @@ class MemberResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['user']);
+    }
+
     public static function getRelations(): array
     {
         return [];

@@ -138,15 +138,12 @@ class MentorNoteResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery();
+        $query = parent::getEloquentQuery()->with(['mahasiswa', 'mentor']);
 
-        // Mahasiswa can only see notes given to them
         if (Auth::user()->isMahasiswa()) {
             $query->where('user_id', Auth::id());
         }
 
-        // Mentors can only see notes they created or full list if configured
-        // In this case, we let mentors see everything or what they created. Let's let them see everything for monitoring purposes.
         return $query;
     }
 
