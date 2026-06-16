@@ -1,105 +1,90 @@
 <x-filament-panels::page>
     <div class="space-y-6">
-        
+
         {{-- Card Progress Magang --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-            <div class="md:col-span-2 space-y-4">
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400">Progres Keseluruhan Magang</h3>
-                    <div class="flex items-baseline gap-2 mt-1">
-                        <span class="text-3xl font-extrabold text-primary-600 dark:text-primary-400">{{ $progressPercent }}%</span>
-                        <span class="text-xs text-gray-400 dark:text-gray-500">({{ $daysElapsed }} dari {{ $totalDays }} Hari Terlampaui)</span>
+        <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-900">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div class="md:col-span-2 space-y-4">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Progres Magang</p>
+                        <div class="mt-1 flex items-baseline gap-2">
+                            <span class="text-3xl font-bold text-primary-700 dark:text-primary-400">{{ $progressPercent }}%</span>
+                            <span class="text-xs text-gray-400">({{ $daysElapsed }} / {{ $totalDays }} hari)</span>
+                        </div>
+                    </div>
+                    <div class="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                        <div class="h-full rounded-full bg-primary-600 transition-all duration-500 dark:bg-primary-500" style="width: {{ $progressPercent }}%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-500">
+                        <span>{{ $tglMulai->translatedFormat('d M Y') }}</span>
+                        <span>{{ $tglSelesai->translatedFormat('d M Y') }}</span>
                     </div>
                 </div>
 
-                {{-- Progress Bar --}}
-                <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-3.5 overflow-hidden">
-                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500" style="width: {{ $progressPercent }}%"></div>
-                </div>
-
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                    <span class="flex items-center gap-1">🚀 Mulai: {{ $tglMulai->translatedFormat('d M Y') }}</span>
-                    <span class="flex items-center gap-1">🏁 Selesai: {{ $tglSelesai->translatedFormat('d M Y') }}</span>
-                </div>
+                @if(!auth()->user()->isMahasiswa())
+                    <div class="border-t border-gray-100 pt-4 md:border-l md:border-t-0 md:pl-6 md:pt-0 dark:border-gray-800">
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Filter Mahasiswa</label>
+                        <select wire:model.live="selectedUserId"
+                            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                            <option value="">Semua Mahasiswa</option>
+                            @foreach($mahasiswaList as $mhs)
+                                <option value="{{ $mhs->id }}">{{ $mhs->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
             </div>
-
-            {{-- Filter Mahasiswa --}}
-            @if(!auth()->user()->isMahasiswa())
-                <div class="flex flex-col justify-center border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-700 md:pl-6 pt-4 md:pt-0">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pantau Mahasiswa:</label>
-                    <select wire:model.live="selectedUserId"
-                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Semua Mahasiswa</option>
-                        @foreach($mahasiswaList as $mhs)
-                            <option value="{{ $mhs->id }}">{{ $mhs->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            @endif
         </div>
 
-        {{-- Stream Garis Waktu --}}
-        <div class="relative border-l-2 border-gray-200 dark:border-gray-700 ml-4 md:ml-6 space-y-8 pb-10">
+        {{-- Timeline Stream --}}
+        <div class="relative ml-3 space-y-6 border-l-2 border-gray-200 pb-8 dark:border-gray-700 md:ml-5">
             @if($timelineEvents->isEmpty())
-                <div class="pl-8 text-center py-10 text-gray-500 dark:text-gray-400">
-                    Belum ada logbook/aktivitas yang tercatat untuk filter ini.
+                <div class="py-12 pl-8 text-center">
+                    <p class="text-sm text-gray-500">Belum ada logbook untuk filter ini.</p>
                 </div>
             @else
                 @foreach($timelineEvents as $event)
                     <div class="relative pl-8 md:pl-10">
-                        {{-- Dot Indikator --}}
-                        <span class="absolute -left-[9px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-white dark:bg-gray-800 ring-4 ring-primary-500/20">
-                            <span class="h-2 w-2 rounded-full bg-primary-500"></span>
-                        </span>
+                        <span class="absolute -left-[7px] top-2 h-3 w-3 rounded-full border-2 border-white bg-primary-600 ring-2 ring-primary-100 dark:border-gray-900 dark:ring-primary-900"></span>
 
-                        {{-- Card Event --}}
-                        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm transition duration-200 hover:shadow-md">
-                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 dark:border-gray-700 pb-3 mb-3">
+                        <article class="overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:shadow-sm dark:border-gray-700 dark:bg-gray-900">
+                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 px-5 py-3 dark:border-gray-800">
                                 <div class="flex items-center gap-3">
-                                    {{-- Avatar Placeholder / Inisial --}}
-                                    <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-600 dark:text-primary-400 flex items-center justify-center font-bold text-xs">
+                                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary-50 text-xs font-bold text-primary-700 dark:bg-primary-950 dark:text-primary-300">
                                         {{ strtoupper(substr($event->user->name, 0, 2)) }}
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-sm text-gray-800 dark:text-white">{{ $event->user->name }}</h4>
-                                        <p class="text-[10px] text-gray-400 dark:text-gray-500">Hari ke-{{ $event->hari_ke }} • {{ $event->tanggal->translatedFormat('l, d F Y') }}</p>
+                                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">{{ $event->user->name }}</h4>
+                                        <p class="text-[11px] text-gray-400">Hari ke-{{ $event->hari_ke }} · {{ $event->tanggal->translatedFormat('d M Y') }}</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full font-semibold">
-                                        {{ $event->kategori_kegiatan }}
-                                    </span>
-                                    <span class="text-xs bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-full font-semibold">
-                                        {{ $event->jam_mulai->format('H:i') }} - {{ $event->jam_selesai->format('H:i') }}
-                                    </span>
+                                    <span class="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">{{ $event->kategori_kegiatan }}</span>
+                                    <span class="rounded-md bg-primary-50 px-2 py-0.5 text-[11px] font-medium tabular-nums text-primary-700 dark:bg-primary-950 dark:text-primary-300">{{ $event->jam_mulai->format('H:i') }}–{{ $event->jam_selesai->format('H:i') }}</span>
                                 </div>
                             </div>
 
-                            <div class="space-y-3">
-                                <h3 class="text-base font-bold text-gray-800 dark:text-white leading-snug">
-                                    {{ $event->judul_kegiatan }}
-                                </h3>
-                                <div class="text-sm text-gray-600 dark:text-gray-300 prose max-w-none dark:prose-invert">
+                            <div class="space-y-3 p-5">
+                                <h3 class="font-semibold text-gray-900 dark:text-white">{{ $event->judul_kegiatan }}</h3>
+                                <div class="prose prose-sm max-w-none text-gray-600 dark:prose-invert dark:text-gray-300">
                                     {!! $event->deskripsi_kegiatan !!}
                                 </div>
 
-                                {{-- Dokumentasi Foto --}}
                                 @if($event->photos->isNotEmpty())
-                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+                                    <div class="grid grid-cols-2 gap-2 pt-1 sm:grid-cols-4">
                                         @foreach($event->photos as $photo)
-                                            <a href="{{ asset('storage/' . $photo->photo_path) }}" target="_blank" class="block group relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
-                                                <img src="{{ asset('storage/' . $photo->photo_path) }}" alt="Dokumentasi" class="object-cover w-full h-24 transition duration-300 group-hover:scale-105">
+                                            <a href="{{ asset('storage/' . $photo->photo_path) }}" target="_blank" class="group block overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                                                <img src="{{ asset('storage/' . $photo->photo_path) }}" alt="Dokumentasi" class="h-24 w-full object-cover transition group-hover:scale-105">
                                             </a>
                                         @endforeach
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        </article>
                     </div>
                 @endforeach
 
-                {{-- Pagination Links --}}
-                <div class="pl-8 md:pl-10 pt-4">
+                <div class="pl-8 md:pl-10">
                     {{ $timelineEvents->links() }}
                 </div>
             @endif

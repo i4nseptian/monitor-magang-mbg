@@ -1,75 +1,56 @@
 <x-filament-panels::page>
     <div class="space-y-6">
         {{-- STATS CARDS --}}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="rounded-xl bg-blue-50 dark:bg-blue-950/30 p-4 border border-blue-100 dark:border-blue-900">
-                <p class="text-2xl font-bold text-blue-700 dark:text-blue-400">{{ $finalStats['total_logbook'] }}</p>
-                <p class="text-xs text-blue-600 dark:text-blue-500 mt-1">Total Logbook</p>
-            </div>
-            <div class="rounded-xl bg-green-50 dark:bg-green-950/30 p-4 border border-green-100 dark:border-green-900">
-                <p class="text-2xl font-bold text-green-700 dark:text-green-400">{{ $finalStats['total_foto'] }}</p>
-                <p class="text-xs text-green-600 dark:text-green-500 mt-1">Total Foto Dokumentasi</p>
-            </div>
-            <div class="rounded-xl bg-purple-50 dark:bg-purple-950/30 p-4 border border-purple-100 dark:border-purple-900">
-                <p class="text-2xl font-bold text-purple-700 dark:text-purple-400">{{ $finalStats['total_project'] }}</p>
-                <p class="text-xs text-purple-600 dark:text-purple-500 mt-1">Total Project</p>
-            </div>
-            <div class="rounded-xl bg-orange-50 dark:bg-orange-950/30 p-4 border border-orange-100 dark:border-orange-900">
-                <p class="text-2xl font-bold text-orange-700 dark:text-orange-400">{{ $finalStats['total_evaluasi'] }}</p>
-                <p class="text-xs text-orange-600 dark:text-orange-500 mt-1">Evaluasi Mentor</p>
-            </div>
-            <div class="rounded-xl bg-cyan-50 dark:bg-cyan-950/30 p-4 border border-cyan-100 dark:border-cyan-900">
-                <p class="text-2xl font-bold text-cyan-700 dark:text-cyan-400">{{ $finalStats['total_skills'] }}</p>
-                <p class="text-xs text-cyan-600 dark:text-cyan-500 mt-1">Skill Terdata</p>
-            </div>
-            <div class="rounded-xl bg-pink-50 dark:bg-pink-950/30 p-4 border border-pink-100 dark:border-pink-900">
-                <p class="text-2xl font-bold text-pink-700 dark:text-pink-400">{{ $finalStats['total_achievements'] }}</p>
-                <p class="text-xs text-pink-600 dark:text-pink-500 mt-1">Pencapaian</p>
-            </div>
-            <div class="rounded-xl bg-indigo-50 dark:bg-indigo-950/30 p-4 border border-indigo-100 dark:border-indigo-900">
-                <p class="text-2xl font-bold text-indigo-700 dark:text-indigo-400">{{ $finalStats['total_hadir'] }}</p>
-                <p class="text-xs text-indigo-600 dark:text-indigo-500 mt-1">Total Kehadiran</p>
-            </div>
-            <div class="rounded-xl bg-teal-50 dark:bg-teal-950/30 p-4 border border-teal-100 dark:border-teal-900">
-                <p class="text-2xl font-bold text-teal-700 dark:text-teal-400">{{ $finalStats['persen_hadir'] }}%</p>
-                <p class="text-xs text-teal-600 dark:text-teal-500 mt-1">Persentase Kehadiran</p>
-            </div>
+        <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <x-stat-card label="Total Logbook" :value="$finalStats['total_logbook']" />
+            <x-stat-card label="Foto Dokumentasi" :value="$finalStats['total_foto']" />
+            <x-stat-card label="Total Project" :value="$finalStats['total_project']" />
+            <x-stat-card label="Evaluasi Mentor" :value="$finalStats['total_evaluasi']" />
+            <x-stat-card label="Skill Terdata" :value="$finalStats['total_skills']" />
+            <x-stat-card label="Pencapaian" :value="$finalStats['total_achievements']" />
+            <x-stat-card label="Total Kehadiran" :value="$finalStats['total_hadir']" />
+            <x-stat-card label="Persentase Kehadiran" :value="$finalStats['persen_hadir'] . '%'" />
         </div>
 
         {{-- INFO --}}
         <x-filament::section>
-            <x-slot name="heading">Info Magang</x-slot>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div><span class="text-gray-500">Periode:</span> <span class="font-semibold">{{ $finalStats['tgl_mulai']->format('d M Y') }} - {{ $finalStats['tgl_selesai']->format('d M Y') }}</span></div>
-                <div><span class="text-gray-500">Total Hari:</span> <span class="font-semibold">{{ $finalStats['total_hari'] }} Hari</span></div>
-                <div><span class="text-gray-500">Kategori Terbanyak:</span> <span class="font-semibold">{{ $finalStats['top_category'] }} ({{ $finalStats['top_category_count'] }})</span></div>
-                <div><span class="text-gray-500">Total Dokumentasi:</span> <span class="font-semibold">{{ $finalStats['total_dokumentasi'] }}</span></div>
+            <x-slot name="heading">Ringkasan Magang</x-slot>
+            <div class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2 lg:grid-cols-4">
+                <div class="rounded-lg border border-gray-100 bg-gray-50/80 p-4 dark:border-gray-800 dark:bg-gray-900/40">
+                    <p class="text-xs font-medium text-gray-500">Periode</p>
+                    <p class="mt-1 font-semibold text-gray-900 dark:text-white">{{ $finalStats['tgl_mulai']->format('d M Y') }} – {{ $finalStats['tgl_selesai']->format('d M Y') }}</p>
+                </div>
+                <div class="rounded-lg border border-gray-100 bg-gray-50/80 p-4 dark:border-gray-800 dark:bg-gray-900/40">
+                    <p class="text-xs font-medium text-gray-500">Total Hari</p>
+                    <p class="mt-1 font-semibold text-gray-900 dark:text-white">{{ $finalStats['total_hari'] }} hari</p>
+                </div>
+                <div class="rounded-lg border border-gray-100 bg-gray-50/80 p-4 dark:border-gray-800 dark:bg-gray-900/40">
+                    <p class="text-xs font-medium text-gray-500">Kategori Terbanyak</p>
+                    <p class="mt-1 font-semibold text-gray-900 dark:text-white">{{ $finalStats['top_category'] }} ({{ $finalStats['top_category_count'] }})</p>
+                </div>
+                <div class="rounded-lg border border-gray-100 bg-gray-50/80 p-4 dark:border-gray-800 dark:bg-gray-900/40">
+                    <p class="text-xs font-medium text-gray-500">Total Dokumentasi</p>
+                    <p class="mt-1 font-semibold text-gray-900 dark:text-white">{{ $finalStats['total_dokumentasi'] }}</p>
+                </div>
             </div>
         </x-filament::section>
 
         {{-- CHARTS --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {{-- Skill Chart --}}
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
             <x-filament::section>
                 <x-slot name="heading">Perkembangan Skill</x-slot>
                 <canvas id="skillChart" style="max-height:250px"></canvas>
             </x-filament::section>
-
-            {{-- Category Chart --}}
             <x-filament::section>
-                <x-slot name="heading">Distribusi Kategori Kegiatan</x-slot>
+                <x-slot name="heading">Distribusi Kategori</x-slot>
                 <canvas id="categoryChart" style="max-height:250px"></canvas>
             </x-filament::section>
-
-            {{-- Mood Chart --}}
             <x-filament::section>
-                <x-slot name="heading">Distribusi Mood/Tingkat Kesulitan</x-slot>
+                <x-slot name="heading">Distribusi Mood</x-slot>
                 <canvas id="moodChart" style="max-height:250px"></canvas>
             </x-filament::section>
-
-            {{-- Weekly Logbook Trend --}}
             <x-filament::section>
-                <x-slot name="heading">Tren Logbook per Minggu</x-slot>
+                <x-slot name="heading">Tren Logbook Mingguan</x-slot>
                 <canvas id="weeklyChart" style="max-height:250px"></canvas>
             </x-filament::section>
         </div>
@@ -77,22 +58,24 @@
         {{-- Kategori Distribution Table --}}
         <x-filament::section>
             <x-slot name="heading">Detail Kategori Pekerjaan</x-slot>
-            <table class="w-full text-sm">
-                <thead>
-                    <tr class="border-b">
-                        <th class="text-left py-2">Kategori</th>
-                        <th class="text-right py-2">Jumlah</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($finalStats['category_distribution'] as $cat)
-                    <tr class="border-b">
-                        <td class="py-1.5">{{ $cat['kategori_kegiatan'] }}</td>
-                        <td class="text-right py-1.5">{{ $cat['total'] }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Kategori</th>
+                            <th class="py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                        @foreach($finalStats['category_distribution'] as $cat)
+                        <tr>
+                            <td class="py-2.5 text-gray-800 dark:text-gray-200">{{ $cat['kategori_kegiatan'] }}</td>
+                            <td class="py-2.5 text-right font-semibold tabular-nums text-gray-900 dark:text-white">{{ $cat['total'] }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </x-filament::section>
     </div>
 
@@ -100,7 +83,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Skill Chart
+            const brandColors = ['#1e3a5f', '#486581', '#627d98', '#829ab1', '#38bdf8', '#0ea5e9', '#334e68', '#102a43'];
+            const chartDefaults = { responsive: true, plugins: { legend: { labels: { boxWidth: 12, padding: 16 } } } };
+
             const skillCtx = document.getElementById('skillChart');
             if (skillCtx) {
                 new Chart(skillCtx, {
@@ -108,63 +93,38 @@
                     data: {
                         labels: @json($skillData['labels']),
                         datasets: [
-                            {
-                                label: 'Awal Magang',
-                                data: @json($skillData['awal']),
-                                backgroundColor: 'rgba(234, 179, 8, 0.7)',
-                                borderColor: 'rgb(234, 179, 8)',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'Akhir Magang',
-                                data: @json($skillData['akhir']),
-                                backgroundColor: 'rgba(34, 197, 94, 0.7)',
-                                borderColor: 'rgb(34, 197, 94)',
-                                borderWidth: 1
-                            }
+                            { label: 'Awal', data: @json($skillData['awal']), backgroundColor: '#bcccdc', borderRadius: 4 },
+                            { label: 'Akhir', data: @json($skillData['akhir']), backgroundColor: '#1e3a5f', borderRadius: 4 }
                         ]
                     },
-                    options: {
-                        responsive: true,
-                        scales: { y: { beginAtZero: true, max: 100 } }
-                    }
+                    options: { ...chartDefaults, scales: { y: { beginAtZero: true, max: 100 } } }
                 });
             }
 
-            // Category Pie Chart
             const catCtx = document.getElementById('categoryChart');
             if (catCtx) {
                 new Chart(catCtx, {
                     type: 'doughnut',
                     data: {
                         labels: @json($categoryData['labels']),
-                        datasets: [{
-                            data: @json($categoryData['values']),
-                            backgroundColor: [
-                                '#3b82f6', '#22c55e', '#f59e0b', '#ef4444',
-                                '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#6366f1'
-                            ]
-                        }]
-                    }
+                        datasets: [{ data: @json($categoryData['values']), backgroundColor: brandColors, borderWidth: 0 }]
+                    },
+                    options: chartDefaults
                 });
             }
 
-            // Mood Chart
             const moodCtx = document.getElementById('moodChart');
             if (moodCtx) {
                 new Chart(moodCtx, {
                     type: 'pie',
                     data: {
                         labels: @json($moodData['labels']),
-                        datasets: [{
-                            data: @json($moodData['values']),
-                            backgroundColor: ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444']
-                        }]
-                    }
+                        datasets: [{ data: @json($moodData['values']), backgroundColor: ['#1e3a5f', '#486581', '#627d98', '#38bdf8'], borderWidth: 0 }]
+                    },
+                    options: chartDefaults
                 });
             }
 
-            // Weekly Logbook Trend
             const weeklyCtx = document.getElementById('weeklyChart');
             if (weeklyCtx) {
                 new Chart(weeklyCtx, {
@@ -172,18 +132,17 @@
                     data: {
                         labels: @json($weeklyLogbookData['labels']),
                         datasets: [{
-                            label: 'Jumlah Logbook',
+                            label: 'Logbook',
                             data: @json($weeklyLogbookData['values']),
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderColor: '#1e3a5f',
+                            backgroundColor: 'rgba(30, 58, 95, 0.08)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.35,
+                            pointBackgroundColor: '#1e3a5f',
+                            pointRadius: 3
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-                    }
+                    options: { ...chartDefaults, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
                 });
             }
         });

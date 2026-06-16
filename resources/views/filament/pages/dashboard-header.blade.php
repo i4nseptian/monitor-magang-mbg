@@ -1,28 +1,45 @@
 <div class="mb-6">
-    <div class="bg-gradient-to-r {{ $roleColor }} rounded-xl p-6 shadow-lg">
-        <div class="flex items-center justify-between">
-            <div class="text-white">
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="text-sm font-medium bg-white/20 px-3 py-0.5 rounded-full">
+    <div class="relative overflow-hidden rounded-2xl border border-primary-200/60 bg-gradient-to-br from-primary-800 via-primary-800 to-primary-900 p-6 shadow-sm dark:border-primary-800 dark:from-primary-950 dark:to-gray-950">
+        {{-- Decorative circles --}}
+        <div class="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/5"></div>
+        <div class="pointer-events-none absolute -bottom-6 right-20 h-20 w-20 rounded-full bg-sky-400/10"></div>
+
+        <div class="relative flex items-center justify-between gap-4">
+            <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="inline-flex items-center rounded-md bg-white/15 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
                         {{ $roleLabel }}
                     </span>
                     @if ($hariKe > 0)
-                        <span class="text-sm font-medium bg-white/20 px-3 py-0.5 rounded-full">
+                        <span class="inline-flex items-center rounded-md bg-sky-400/20 px-2.5 py-1 text-xs font-medium text-sky-100">
                             Hari ke-{{ $hariKe }}
                         </span>
                     @endif
                 </div>
-                <h1 class="text-2xl font-bold mt-2">Selamat Datang, {{ $user->name }}!</h1>
-                <p class="text-white/80 text-sm mt-1">
-                    Sistem Monitoring Magang Dinas Komunikasi dan Informatika Kota Makassar
+                <h1 class="mt-3 truncate text-xl font-bold text-white sm:text-2xl">
+                    Halo, {{ $user->name }}
+                </h1>
+                <p class="mt-1 text-sm text-primary-200">
+                    Diskominfo Makassar · {{ now()->translatedFormat('l, d F Y') }}
                 </p>
             </div>
-            <div class="hidden sm:block">
-                <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </div>
+
+            <div class="hidden shrink-0 sm:block">
+                @if($user->member?->foto_profil && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->member->foto_profil))
+                    <img src="{{ asset('storage/' . $user->member->foto_profil) }}"
+                         alt="{{ $user->name }}"
+                         class="h-14 w-14 rounded-full object-cover ring-2 ring-white/30">
+                @else
+                    @php
+                        $words = explode(' ', $user->name);
+                        $initials = count($words) >= 2
+                            ? strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1))
+                            : strtoupper(substr($user->name, 0, 2));
+                    @endphp
+                    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 text-lg font-bold text-white ring-2 ring-white/20">
+                        {{ $initials }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>

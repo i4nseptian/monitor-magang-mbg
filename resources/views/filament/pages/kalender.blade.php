@@ -1,72 +1,64 @@
 <x-filament-panels::page>
     <div class="space-y-6">
         {{-- Header & Navigasi Bulan --}}
-        <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-            <h2 class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">
-                <x-filament::icon icon="heroicon-o-calendar-days" class="h-6 w-6 text-primary-500" />
-                <span>{{ $currentMonthName }}</span>
+        <div class="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+            <h2 class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white">
+                <x-filament::icon icon="heroicon-o-calendar-days" class="h-5 w-5 text-primary-600" />
+                {{ $currentMonthName }}
             </h2>
             <div class="flex items-center gap-2">
-                <x-filament::button wire:click="prevMonth" color="gray" size="sm" icon="heroicon-m-chevron-left" icon-position="before">
-                    Bulan Lalu
-                </x-filament::button>
-                <x-filament::button wire:click="nextMonth" color="gray" size="sm" icon="heroicon-m-chevron-right" icon-position="after">
-                    Bulan Depan
-                </x-filament::button>
+                <x-filament::button wire:click="prevMonth" color="gray" size="sm" icon="heroicon-m-chevron-left" />
+                <x-filament::button wire:click="nextMonth" color="gray" size="sm" icon="heroicon-m-chevron-right" />
             </div>
         </div>
 
         {{-- Grid Kalender --}}
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-            {{-- Header Nama Hari --}}
-            <div class="grid grid-cols-7 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+        <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+            <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-950/50">
                 @foreach ($weeks as $dayName)
-                    <div class="py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <div class="py-3 text-center text-[11px] font-semibold uppercase tracking-wider text-gray-500">
                         {{ $dayName }}
                     </div>
                 @endforeach
             </div>
 
-            {{-- Grid Tanggal --}}
-            <div class="grid grid-cols-7 auto-rows-[120px] divide-x divide-y divide-gray-200 dark:divide-gray-700">
+            <div class="grid grid-cols-7 auto-rows-[minmax(110px,auto)] divide-x divide-y divide-gray-100 dark:divide-gray-800">
                 @foreach ($days as $day)
                     @php
-                        $dayClass = 'p-2 flex flex-col justify-between transition duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/30 ';
+                        $dayClass = 'flex flex-col p-2 transition ';
                         if (!$day['is_current_month']) {
-                            $dayClass .= 'bg-gray-50/50 dark:bg-gray-900/20 text-gray-400 dark:text-gray-600';
+                            $dayClass .= 'bg-gray-50/50 text-gray-300 dark:bg-gray-950/30 dark:text-gray-600';
                         } else {
-                            $dayClass .= 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200';
+                            $dayClass .= 'bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200';
                         }
                         if ($day['is_today']) {
-                            $dayClass .= ' ring-2 ring-primary-500 ring-inset bg-primary-50/20 dark:bg-primary-950/10';
+                            $dayClass .= ' ring-2 ring-inset ring-primary-500/40 bg-primary-50/30 dark:bg-primary-950/10';
                         }
                     @endphp
                     <div class="{{ $dayClass }}">
-                        {{-- Angka Tanggal --}}
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold {{ $day['is_today'] ? 'text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-950 px-2 py-0.5 rounded-full' : '' }}">
-                                {{ $day['date']->day }}
-                            </span>
+                        <div class="mb-1 flex items-center justify-between">
+                            <span @class([
+                                'text-xs font-bold',
+                                'flex h-6 w-6 items-center justify-center rounded-full bg-primary-600 text-white' => $day['is_today'],
+                            ])>{{ $day['date']->day }}</span>
                             @if($day['logbooks']->count() > 0)
-                                <span class="text-[10px] bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded font-medium">
-                                    {{ $day['logbooks']->count() }} Log
+                                <span class="rounded bg-primary-100 px-1.5 py-0.5 text-[10px] font-semibold text-primary-700 dark:bg-primary-950 dark:text-primary-300">
+                                    {{ $day['logbooks']->count() }}
                                 </span>
                             @endif
                         </div>
 
-                        {{-- Isi Kegiatan / Dokumentasi singkat --}}
-                        <div class="mt-1 flex-1 overflow-y-auto space-y-1 scrollbar-none">
+                        <div class="flex-1 space-y-1 overflow-y-auto">
                             @foreach ($day['logbooks'] as $log)
-                                <div class="text-[9px] truncate bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 px-1 py-0.5 rounded border border-blue-100 dark:border-blue-900" 
+                                <div class="truncate rounded border border-primary-100 bg-primary-50/60 px-1.5 py-0.5 text-[10px] font-medium text-primary-800 dark:border-primary-900 dark:bg-primary-950/40 dark:text-primary-300"
                                      title="{{ $log->judul_kegiatan }} ({{ $log->user->name }})">
-                                    {{ $log->user->name }}: {{ $log->judul_kegiatan }}
+                                    {{ Str::limit($log->judul_kegiatan, 18) }}
                                 </div>
                             @endforeach
-
                             @foreach ($day['documentations'] as $doc)
-                                <div class="text-[9px] truncate bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-1 py-0.5 rounded border border-purple-100 dark:border-purple-900" 
-                                     title="Dokumentasi: {{ $doc->judul }} ({{ $doc->user->name }})">
-                                    📸 {{ $doc->judul }}
+                                <div class="truncate rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-[10px] text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                                     title="Dokumentasi: {{ $doc->judul }}">
+                                    {{ Str::limit($doc->judul, 16) }}
                                 </div>
                             @endforeach
                         </div>
@@ -76,19 +68,19 @@
         </div>
 
         {{-- Legenda --}}
-        <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900/40 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div class="flex flex-wrap items-center gap-4 rounded-lg border border-gray-200 bg-gray-50/80 p-4 text-xs text-gray-500 dark:border-gray-700 dark:bg-gray-900/40">
             <span class="font-semibold text-gray-700 dark:text-gray-300">Keterangan:</span>
             <div class="flex items-center gap-1.5">
-                <span class="w-3 h-3 bg-blue-100 dark:bg-blue-950 border border-blue-200 dark:border-blue-900 rounded"></span>
-                <span>Logbook Kegiatan Harian</span>
+                <span class="h-2.5 w-2.5 rounded-sm bg-primary-600"></span>
+                <span>Logbook</span>
             </div>
             <div class="flex items-center gap-1.5">
-                <span class="w-3 h-3 bg-purple-100 dark:bg-purple-950 border border-purple-200 dark:border-purple-900 rounded"></span>
-                <span>Dokumentasi Kegiatan</span>
+                <span class="h-2.5 w-2.5 rounded-sm bg-gray-400"></span>
+                <span>Dokumentasi</span>
             </div>
             <div class="flex items-center gap-1.5">
-                <span class="w-3.5 h-3.5 rounded-full bg-primary-100 dark:bg-primary-950 border border-primary-300 dark:border-primary-800 text-center text-[9px] text-primary-600 font-bold px-1 py-0.5">Hari ini</span>
-                <span>Hari Ini</span>
+                <span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary-600 text-[9px] font-bold text-white">H</span>
+                <span>Hari ini</span>
             </div>
         </div>
     </div>

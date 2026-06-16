@@ -28,8 +28,24 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->profile()
             ->brandName('InternTrack')
+            ->brandLogo(asset('images/logo-mark.svg'))
+            ->brandLogoHeight('2rem')
+            ->favicon(asset('images/logo-mark.svg'))
+            ->font('Plus Jakarta Sans', provider: 'google')
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => [
+                    50 => '240, 244, 248',
+                    100 => '217, 226, 236',
+                    200 => '188, 204, 220',
+                    300 => '159, 179, 200',
+                    400 => '130, 154, 177',
+                    500 => '98, 125, 152',
+                    600 => '72, 101, 129',
+                    700 => '51, 78, 104',
+                    800 => '30, 58, 95',
+                    900 => '16, 42, 67',
+                    950 => '10, 26, 43',
+                ],
                 'gray' => Color::Slate,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

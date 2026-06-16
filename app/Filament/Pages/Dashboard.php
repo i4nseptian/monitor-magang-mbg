@@ -59,17 +59,9 @@ class Dashboard extends BaseDashboard
             default => 'Pengguna',
         };
 
-        $roleColor = match (true) {
-            $user->isAdmin() => 'from-purple-600 to-blue-600',
-            $user->isMentor() => 'from-emerald-500 to-teal-600',
-            $user->isMahasiswa() => 'from-blue-500 to-indigo-600',
-            default => 'from-gray-500 to-gray-600',
-        };
-
         return view('filament.pages.dashboard-header', [
             'user' => $user,
             'roleLabel' => $roleLabel,
-            'roleColor' => $roleColor,
             'hariKe' => $hariKe,
         ]);
     }
