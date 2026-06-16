@@ -2,10 +2,10 @@
     <div class="mx-auto max-w-3xl space-y-6">
 
         {{-- Header --}}
-        <div class="rounded-xl border border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-900">
-            <img src="{{ asset('images/logo-mark.svg') }}" alt="InternTrack" class="mx-auto h-12 w-12">
+        <div class="rounded-xl border border-gray-200 bg-gradient-to-b from-white to-gray-50/50 p-8 text-center dark:border-gray-700 dark:from-gray-900 dark:to-gray-950/30">
+            <img src="{{ asset('images/logo-mark.svg') }}" alt="InternTrack" class="mx-auto h-14 w-14">
             <h1 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">InternTrack</h1>
-            <p class="mt-1 text-sm text-gray-500">Monitoring & Dokumentasi Magang · Diskominfo Makassar</p>
+            <p class="mt-1 text-sm font-medium text-gray-500">Monitoring & Dokumentasi Magang · Diskominfo Makassar</p>
         </div>
 
         {{-- Tentang --}}

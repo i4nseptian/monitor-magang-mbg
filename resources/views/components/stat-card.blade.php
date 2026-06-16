@@ -17,8 +17,9 @@
     $cardColor = $colorMap[$color] ?? $colorMap['primary'];
 @endphp
 
-<div {{ $attributes->merge(['class' => 'group relative overflow-hidden rounded-xl border bg-white dark:bg-gray-900 p-5 transition-all duration-200 hover:shadow-md ' . $cardColor]) }}>
-    <div class="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-5"></div>
+<div {{ $attributes->merge(['class' => 'group relative overflow-hidden rounded-xl border bg-white dark:bg-gray-900 p-5 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ' . $cardColor]) }}>
+    <div class="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-[0.07]"></div>
+    <div class="absolute -bottom-6 -left-6 h-16 w-16 rounded-full bg-current opacity-[0.04]"></div>
 
     <div class="relative">
         @if($icon)
@@ -26,10 +27,10 @@
                 {!! $icon !!}
             </div>
         @endif
-        <p class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $value }}</p>
-        <p class="mt-1 text-xs font-medium text-gray-500 dark:text-gray-400">{{ $label }}</p>
+        <p class="text-2xl font-bold tracking-tight tabular-nums text-gray-900 dark:text-white">{{ $value }}</p>
+        <p class="mt-1 text-xs font-semibold text-gray-500 dark:text-gray-400">{{ $label }}</p>
         @if($trend)
-            <p class="mt-2 flex items-center gap-1 text-[11px] text-gray-400 dark:text-gray-500">
+            <p class="mt-2 flex items-center gap-1 text-[11px] font-medium text-gray-400 dark:text-gray-500">
                 {{ $trend }}
             </p>
         @endif

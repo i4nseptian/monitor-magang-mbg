@@ -3,13 +3,18 @@
 
         {{-- Quick Final Report Generator --}}
         <x-filament::section>
-            <x-slot name="heading">Generate Laporan Akhir</x-slot>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-document-text" class="h-5 w-5 text-primary-600" />
+                    Generate Laporan Akhir
+                </div>
+            </x-slot>
             <x-slot name="description">Satu klik untuk menghasilkan laporan akhir magang lengkap dalam format PDF.</x-slot>
 
-            <div class="mt-4 rounded-xl border border-primary-200/60 bg-primary-50/50 p-6 dark:border-primary-900 dark:bg-primary-950/20">
+            <div class="mt-4 rounded-xl border border-primary-200/60 bg-gradient-to-br from-primary-50/80 to-white p-6 dark:border-primary-900 dark:from-primary-950/30 dark:to-gray-900/30">
                 <div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
                     <div class="max-w-xl">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
                             Mencakup cover, profil instansi, timeline, rekap logbook, dokumentasi foto,
                             grafik aktivitas, evaluasi mentor, kesimpulan, dan lampiran.
                         </p>
@@ -18,9 +23,9 @@
                         Generate PDF
                     </x-filament::button>
                 </div>
-                <div class="mt-4 flex flex-wrap gap-2">
+                <div class="mt-4 flex flex-wrap gap-1.5">
                     @foreach(['Cover', 'Profil', 'Timeline', 'Logbook', 'Dokumentasi', 'Grafik', 'Evaluasi', 'Kesimpulan', 'Lampiran'] as $section)
-                        <span class="rounded-md border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                        <span class="rounded-md border border-primary-200/50 bg-white/80 px-2.5 py-1 text-[11px] font-medium text-primary-700 dark:border-primary-800 dark:bg-gray-900/60 dark:text-primary-300">
                             {{ $section }}
                         </span>
                     @endforeach
@@ -30,12 +35,17 @@
 
         {{-- Form Konfigurasi --}}
         <x-filament::section>
-            <x-slot name="heading">Konfigurasi Laporan</x-slot>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-adjustments-horizontal" class="h-5 w-5 text-gray-500" />
+                    Konfigurasi Laporan
+                </div>
+            </x-slot>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
                 <div>
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Laporan</label>
                     <select wire:model.live="jenis_laporan"
-                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
                         <option value="harian">Laporan Harian</option>
                         <option value="mingguan">Laporan Mingguan</option>
                         <option value="bulanan">Laporan Bulanan</option>
@@ -45,18 +55,18 @@
                 <div>
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Dari Tanggal</label>
                     <input type="date" wire:model.live="tanggal_dari"
-                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
                 </div>
                 <div>
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Hingga Tanggal</label>
                     <input type="date" wire:model.live="tanggal_hingga"
-                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
                 </div>
                 @if(!auth()->user()->isMahasiswa())
                 <div>
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Filter Mahasiswa</label>
                     <select wire:model.live="user_id"
-                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
                         <option value="">Semua Mahasiswa</option>
                         @foreach($mahasiswaList as $mhs)
                         <option value="{{ $mhs->id }}">{{ $mhs->name }}</option>
@@ -69,20 +79,30 @@
 
         {{-- Preview Stats --}}
         <x-filament::section>
-            <x-slot name="heading">Preview Data</x-slot>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-eye" class="h-5 w-5 text-gray-500" />
+                    Preview Data
+                </div>
+            </x-slot>
             <div class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-                <x-stat-card label="Logbook" :value="$stats['totalLogbook']" />
-                <x-stat-card label="Dokumentasi" :value="$stats['totalDokumentasi']" />
-                <x-stat-card label="Catatan Mentor" :value="$stats['totalCatatanMentor']" />
-                <x-stat-card label="Skill" :value="$stats['totalSkill']" />
-                <x-stat-card label="Project" :value="$stats['totalProject']" />
-                <x-stat-card label="Kehadiran" :value="$stats['totalAttendance']" />
+                <x-stat-card label="Logbook" :value="$stats['totalLogbook']" color="primary" />
+                <x-stat-card label="Dokumentasi" :value="$stats['totalDokumentasi']" color="warning" />
+                <x-stat-card label="Catatan Mentor" :value="$stats['totalCatatanMentor']" color="info" />
+                <x-stat-card label="Skill" :value="$stats['totalSkill']" color="success" />
+                <x-stat-card label="Project" :value="$stats['totalProject']" color="danger" />
+                <x-stat-card label="Kehadiran" :value="$stats['totalAttendance']" color="primary" />
             </div>
         </x-filament::section>
 
         {{-- Export Info --}}
         <x-filament::section>
-            <x-slot name="heading">Jenis Laporan</x-slot>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-document" class="h-5 w-5 text-gray-500" />
+                    Jenis Laporan
+                </div>
+            </x-slot>
             <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                 @foreach([
                     ['title' => 'Laporan Harian', 'desc' => 'Rekap kegiatan per tanggal beserta dokumentasi hari itu.'],
@@ -91,16 +111,16 @@
                     ['title' => 'Laporan Akhir Magang', 'desc' => 'Dokumen lengkap dari cover hingga lampiran.', 'highlight' => true],
                 ] as $type)
                     <div @class([
-                        'rounded-xl border p-4',
-                        'border-primary-200 bg-primary-50/40 dark:border-primary-900 dark:bg-primary-950/20' => $type['highlight'] ?? false,
-                        'border-gray-200 dark:border-gray-700' => !($type['highlight'] ?? false),
+                        'rounded-xl border p-4 transition hover:shadow-sm',
+                        'border-primary-200 bg-gradient-to-br from-primary-50/60 to-white dark:border-primary-900 dark:from-primary-950/30 dark:to-gray-900/30' => $type['highlight'] ?? false,
+                        'border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900' => !($type['highlight'] ?? false),
                     ])>
                         <h4 @class([
                             'font-semibold',
                             'text-primary-800 dark:text-primary-300' => $type['highlight'] ?? false,
                             'text-gray-800 dark:text-white' => !($type['highlight'] ?? false),
                         ])>{{ $type['title'] }}</h4>
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $type['desc'] }}</p>
+                        <p class="mt-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400">{{ $type['desc'] }}</p>
                     </div>
                 @endforeach
             </div>

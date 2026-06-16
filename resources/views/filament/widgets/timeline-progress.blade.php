@@ -27,9 +27,9 @@
 
         <div class="mt-6">
             <div class="mb-2 flex items-center justify-between text-sm">
-                <span class="font-semibold text-gray-700 dark:text-gray-300">{{ $hari_berjalan }} hari berjalan</span>
-                <span class="font-bold text-primary-700 dark:text-primary-400">{{ $persentase }}%</span>
-                <span class="font-medium text-gray-500 dark:text-gray-400">{{ $hari_tersisa }} hari tersisa</span>
+                <span class="font-semibold tabular-nums text-gray-700 dark:text-gray-300">{{ $hari_berjalan }} hari berjalan</span>
+                <span class="font-bold tabular-nums text-primary-700 dark:text-primary-400">{{ $persentase }}%</span>
+                <span class="font-medium tabular-nums text-gray-500 dark:text-gray-400">{{ $hari_tersisa }} hari tersisa</span>
             </div>
 
             <div class="relative h-3 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
@@ -39,17 +39,17 @@
         </div>
 
         <div class="mt-5 grid grid-cols-3 gap-3">
-            <div class="rounded-xl border border-gray-100 bg-gray-50/80 p-3 text-center transition hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-900/40 dark:hover:bg-gray-800/60">
-                <p class="text-xl font-bold text-gray-900 dark:text-white">{{ $total_hari }}</p>
-                <p class="mt-0.5 text-[11px] font-medium text-gray-500">Total Hari</p>
+            <div class="rounded-xl border border-gray-100 bg-gradient-to-b from-gray-50/90 to-white p-3 text-center shadow-sm transition hover:shadow dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
+                <p class="text-xl font-bold tabular-nums text-gray-900 dark:text-white">{{ $total_hari }}</p>
+                <p class="mt-0.5 text-[11px] font-semibold text-gray-500">Total Hari</p>
             </div>
-            <div class="rounded-xl border border-primary-100 bg-primary-50/80 p-3 text-center transition hover:bg-primary-100 dark:border-primary-900/50 dark:bg-primary-950/30 dark:hover:bg-primary-950/50">
-                <p class="text-xl font-bold text-primary-700 dark:text-primary-400">{{ $hari_berjalan }}</p>
-                <p class="mt-0.5 text-[11px] font-medium text-primary-600/80 dark:text-primary-400/80">Sudah Dilalui</p>
+            <div class="rounded-xl border border-primary-100 bg-gradient-to-b from-primary-50/90 to-white p-3 text-center shadow-sm transition hover:shadow dark:border-primary-900/50 dark:from-primary-950/40 dark:to-gray-900/20">
+                <p class="text-xl font-bold tabular-nums text-primary-700 dark:text-primary-400">{{ $hari_berjalan }}</p>
+                <p class="mt-0.5 text-[11px] font-semibold text-primary-600/80 dark:text-primary-400/80">Sudah Dilalui</p>
             </div>
-            <div class="rounded-xl border border-gray-100 bg-gray-50/80 p-3 text-center transition hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-900/40 dark:hover:bg-gray-800/60">
-                <p class="text-xl font-bold text-gray-700 dark:text-gray-300">{{ $hari_tersisa }}</p>
-                <p class="mt-0.5 text-[11px] font-medium text-gray-500">Sisa Hari</p>
+            <div class="rounded-xl border border-gray-100 bg-gradient-to-b from-gray-50/90 to-white p-3 text-center shadow-sm transition hover:shadow dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
+                <p class="text-xl font-bold tabular-nums text-gray-700 dark:text-gray-300">{{ $hari_tersisa }}</p>
+                <p class="mt-0.5 text-[11px] font-semibold text-gray-500">Sisa Hari</p>
             </div>
         </div>
     </x-filament::section>

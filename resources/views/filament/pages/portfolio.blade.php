@@ -3,22 +3,22 @@
 
         {{-- PROFILE HEADER --}}
         <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-            <div class="h-24 bg-gradient-to-r from-primary-800 to-primary-700 dark:from-primary-950 dark:to-primary-900"></div>
+            <div class="h-24 bg-gradient-to-r from-primary-800 via-primary-700 to-primary-600 dark:from-primary-950 dark:via-primary-900 dark:to-primary-800"></div>
             <div class="relative px-6 pb-6">
                 <div class="-mt-12 flex flex-col items-center gap-4 md:flex-row md:items-end">
                     @if($portfolioData['member'] && $portfolioData['member']->foto_profil)
                         <img src="{{ \Illuminate\Support\Facades\Storage::url($portfolioData['member']->foto_profil) }}"
-                             class="h-24 w-24 rounded-full border-4 border-white object-cover shadow-sm dark:border-gray-900">
+                             class="h-24 w-24 shrink-0 rounded-full border-4 border-white object-cover shadow-sm dark:border-gray-900">
                     @else
-                        <div class="flex h-24 w-24 items-center justify-center rounded-full border-4 border-white bg-primary-100 text-3xl font-bold text-primary-700 shadow-sm dark:border-gray-900 dark:bg-primary-950 dark:text-primary-300">
+                        <div class="flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-4 border-white bg-primary-100 text-3xl font-bold text-primary-700 shadow-sm dark:border-gray-900 dark:bg-primary-950 dark:text-primary-300">
                             {{ strtoupper(substr($portfolioData['user']?->name ?? '?', 0, 1)) }}
                         </div>
                     @endif
-                    <div class="text-center md:pb-1 md:text-left">
+                    <div class="min-w-0 text-center md:pb-1 md:text-left">
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $portfolioData['user']?->name ?? 'Nama Tidak Ditemukan' }}</h2>
                         @if($portfolioData['member'])
-                            <p class="mt-0.5 text-sm text-gray-500">{{ $portfolioData['member']->program_studi }}</p>
-                            <p class="text-xs text-gray-400">NIM {{ $portfolioData['member']->nim }} · {{ $portfolioData['member']->divisi }}</p>
+                            <p class="mt-0.5 text-sm font-medium text-gray-500">{{ $portfolioData['member']->program_studi }}</p>
+                            <p class="text-xs tabular-nums text-gray-400">NIM {{ $portfolioData['member']->nim }} · {{ $portfolioData['member']->divisi }}</p>
                         @endif
                     </div>
                 </div>
@@ -48,23 +48,28 @@
         {{-- PROJECTS --}}
         @if(count($portfolioData['projects']) > 0)
         <x-filament::section>
-            <x-slot name="heading">Project</x-slot>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-folder-open" class="h-5 w-5 text-primary-600" />
+                    Project
+                </div>
+            </x-slot>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 @foreach($portfolioData['projects'] as $project)
-                <div class="rounded-xl border border-gray-200 p-4 dark:border-gray-700">
+                <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-900">
                     <div class="flex items-start justify-between gap-2">
                         <h4 class="font-semibold text-gray-900 dark:text-white">{{ $project->judul }}</h4>
                         <span @class([
-                            'shrink-0 rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase',
+                            'shrink-0 whitespace-nowrap rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider',
                             'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400' => $project->status_project === 'Selesai',
                             'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400' => $project->status_project === 'Sedang Dikerjakan',
                             'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' => !in_array($project->status_project, ['Selesai', 'Sedang Dikerjakan']),
                         ])>{{ $project->status_project }}</span>
                     </div>
                     @if($project->teknologi)
-                        <p class="mt-1 text-xs text-gray-400">{{ $project->teknologi }}</p>
+                        <p class="mt-1 text-xs font-medium text-gray-400">{{ $project->teknologi }}</p>
                     @endif
-                    <p class="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-300">{!! nl2br(e(Str::limit($project->deskripsi, 120))) !!}</p>
+                    <p class="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-300">{{ Str::limit(strip_tags($project->deskripsi), 120) }}</p>
                 </div>
                 @endforeach
             </div>
@@ -74,17 +79,22 @@
         {{-- ACHIEVEMENTS --}}
         @if(count($portfolioData['achievements']) > 0)
         <x-filament::section>
-            <x-slot name="heading">Pencapaian</x-slot>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-trophy" class="h-5 w-5 text-amber-500" />
+                    Pencapaian
+                </div>
+            </x-slot>
             <div class="space-y-3">
                 @foreach($portfolioData['achievements'] as $achievement)
-                <div class="flex gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
+                <div class="flex gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-900">
                     @if($achievement->screenshot)
-                    <img src="{{ \Illuminate\Support\Facades\Storage::url($achievement->screenshot) }}" class="h-16 w-16 shrink-0 rounded-lg object-cover">
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url($achievement->screenshot) }}" class="h-16 w-16 shrink-0 rounded-lg object-cover shadow-sm">
                     @endif
-                    <div>
+                    <div class="min-w-0">
                         <h4 class="font-semibold text-gray-900 dark:text-white">{{ $achievement->judul }}</h4>
-                        <p class="text-xs text-gray-400">{{ $achievement->tanggal?->format('d M Y') }}</p>
-                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{{ strip_tags($achievement->deskripsi) }}</p>
+                        <p class="text-xs tabular-nums text-gray-400">{{ $achievement->tanggal?->format('d M Y') }}</p>
+                        <p class="mt-1 text-sm leading-relaxed text-gray-600 dark:text-gray-300">{{ strip_tags($achievement->deskripsi) }}</p>
                     </div>
                 </div>
                 @endforeach

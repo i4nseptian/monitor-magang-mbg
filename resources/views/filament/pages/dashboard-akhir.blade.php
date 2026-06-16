@@ -12,69 +12,112 @@
         </div>
 
         <x-filament::section>
-            <x-slot name="heading">Ringkasan Magang</x-slot>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-information-circle" class="h-5 w-5 text-primary-600" />
+                    Ringkasan Magang
+                </div>
+            </x-slot>
             <div class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2 lg:grid-cols-4">
-                <div class="rounded-lg border border-gray-100 bg-gray-50/80 p-4 dark:border-gray-800 dark:bg-gray-900/40">
-                    <p class="text-xs font-medium text-gray-500">Periode</p>
-                    <p class="mt-1 font-semibold text-gray-900 dark:text-white">{{ $finalStats['tgl_mulai']->format('d M Y') }} – {{ $finalStats['tgl_selesai']->format('d M Y') }}</p>
+                <div class="rounded-xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white p-4 dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
+                    <div class="flex items-center gap-2 text-xs font-medium text-gray-500">
+                        <x-filament::icon icon="heroicon-o-calendar-days" class="h-4 w-4" />
+                        Periode
+                    </div>
+                    <p class="mt-1.5 text-sm font-semibold tabular-nums text-gray-900 dark:text-white">{{ $finalStats['tgl_mulai']->format('d M Y') }} – {{ $finalStats['tgl_selesai']->format('d M Y') }}</p>
                 </div>
-                <div class="rounded-lg border border-gray-100 bg-gray-50/80 p-4 dark:border-gray-800 dark:bg-gray-900/40">
-                    <p class="text-xs font-medium text-gray-500">Total Hari</p>
-                    <p class="mt-1 font-semibold text-gray-900 dark:text-white">{{ $finalStats['total_hari'] }} hari</p>
+                <div class="rounded-xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white p-4 dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
+                    <div class="flex items-center gap-2 text-xs font-medium text-gray-500">
+                        <x-filament::icon icon="heroicon-o-clock" class="h-4 w-4" />
+                        Total Hari
+                    </div>
+                    <p class="mt-1.5 text-sm font-semibold tabular-nums text-gray-900 dark:text-white">{{ $finalStats['total_hari'] }} hari</p>
                 </div>
-                <div class="rounded-lg border border-gray-100 bg-gray-50/80 p-4 dark:border-gray-800 dark:bg-gray-900/40">
-                    <p class="text-xs font-medium text-gray-500">Kategori Terbanyak</p>
-                    <p class="mt-1 font-semibold text-gray-900 dark:text-white">{{ $finalStats['top_category'] }} ({{ $finalStats['top_category_count'] }})</p>
+                <div class="rounded-xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white p-4 dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
+                    <div class="flex items-center gap-2 text-xs font-medium text-gray-500">
+                        <x-filament::icon icon="heroicon-o-tag" class="h-4 w-4" />
+                        Kategori Terbanyak
+                    </div>
+                    <p class="mt-1.5 text-sm font-semibold text-gray-900 dark:text-white">{{ $finalStats['top_category'] }}</p>
+                    <p class="text-[11px] text-gray-400 tabular-nums">{{ $finalStats['top_category_count'] }} kegiatan</p>
                 </div>
-                <div class="rounded-lg border border-gray-100 bg-gray-50/80 p-4 dark:border-gray-800 dark:bg-gray-900/40">
-                    <p class="text-xs font-medium text-gray-500">Total Dokumentasi</p>
-                    <p class="mt-1 font-semibold text-gray-900 dark:text-white">{{ $finalStats['total_dokumentasi'] }}</p>
+                <div class="rounded-xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white p-4 dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
+                    <div class="flex items-center gap-2 text-xs font-medium text-gray-500">
+                        <x-filament::icon icon="heroicon-o-photo" class="h-4 w-4" />
+                        Total Dokumentasi
+                    </div>
+                    <p class="mt-1.5 text-sm font-semibold tabular-nums text-gray-900 dark:text-white">{{ $finalStats['total_dokumentasi'] }}</p>
                 </div>
             </div>
         </x-filament::section>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
             <x-filament::section>
-                <x-slot name="heading">Perkembangan Skill</x-slot>
-                <div class="relative" style="max-height:250px">
-                    <canvas id="skillChart"></canvas>
+                <x-slot name="heading">
+                    <div class="flex items-center gap-2">
+                        <x-filament::icon icon="heroicon-o-chart-bar-square" class="h-5 w-5 text-primary-600" />
+                        Perkembangan Skill
+                    </div>
+                </x-slot>
+                <div class="relative flex items-center justify-center" style="height:250px">
+                    <canvas id="skillChart" class="max-h-full max-w-full"></canvas>
                 </div>
             </x-filament::section>
             <x-filament::section>
-                <x-slot name="heading">Distribusi Kategori</x-slot>
-                <div class="relative" style="max-height:250px">
-                    <canvas id="categoryChart"></canvas>
+                <x-slot name="heading">
+                    <div class="flex items-center gap-2">
+                        <x-filament::icon icon="heroicon-o-chart-pie" class="h-5 w-5 text-primary-600" />
+                        Distribusi Kategori
+                    </div>
+                </x-slot>
+                <div class="relative flex items-center justify-center" style="height:250px">
+                    <canvas id="categoryChart" class="max-h-full max-w-full"></canvas>
                 </div>
             </x-filament::section>
             <x-filament::section>
-                <x-slot name="heading">Distribusi Mood</x-slot>
-                <div class="relative" style="max-height:250px">
-                    <canvas id="moodChart"></canvas>
+                <x-slot name="heading">
+                    <div class="flex items-center gap-2">
+                        <x-filament::icon icon="heroicon-o-face-smile" class="h-5 w-5 text-primary-600" />
+                        Distribusi Mood
+                    </div>
+                </x-slot>
+                <div class="relative flex items-center justify-center" style="height:250px">
+                    <canvas id="moodChart" class="max-h-full max-w-full"></canvas>
                 </div>
             </x-filament::section>
             <x-filament::section>
-                <x-slot name="heading">Tren Logbook Mingguan</x-slot>
-                <div class="relative" style="max-height:250px">
-                    <canvas id="weeklyChart"></canvas>
+                <x-slot name="heading">
+                    <div class="flex items-center gap-2">
+                        <x-filament::icon icon="heroicon-o-chart-bar" class="h-5 w-5 text-primary-600" />
+                        Tren Logbook Mingguan
+                    </div>
+                </x-slot>
+                <div class="relative flex items-center justify-center" style="height:250px">
+                    <canvas id="weeklyChart" class="max-h-full max-w-full"></canvas>
                 </div>
             </x-filament::section>
         </div>
 
         <x-filament::section>
-            <x-slot name="heading">Detail Kategori Pekerjaan</x-slot>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-list-bullet" class="h-5 w-5 text-primary-600" />
+                    Detail Kategori Pekerjaan
+                </div>
+            </x-slot>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <th class="py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Kategori</th>
-                            <th class="py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Jumlah</th>
+                            <th class="py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-500">Kategori</th>
+                            <th class="py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-500">Jumlah</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                         @foreach($finalStats['category_distribution'] as $cat)
                         <tr class="transition hover:bg-gray-50 dark:hover:bg-gray-900/40">
-                            <td class="py-2.5 text-gray-800 dark:text-gray-200">{{ $cat['kategori_kegiatan'] }}</td>
-                            <td class="py-2.5 text-right font-semibold tabular-nums text-gray-900 dark:text-white">{{ $cat['total'] }}</td>
+                            <td class="py-3 text-gray-800 dark:text-gray-200">{{ $cat['kategori_kegiatan'] }}</td>
+                            <td class="py-3 text-right font-bold tabular-nums text-gray-900 dark:text-white">{{ $cat['total'] }}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -2,7 +2,12 @@
     <div class="space-y-6">
         <form wire:submit.prevent="save">
             <x-filament::section>
-                <x-slot name="heading">Pengaturan Umum</x-slot>
+                <x-slot name="heading">
+                    <div class="flex items-center gap-2">
+                        <x-filament::icon icon="heroicon-o-cog-6-tooth" class="h-5 w-5 text-gray-500" />
+                        Pengaturan Umum
+                    </div>
+                </x-slot>
                 <x-slot name="description">Konfigurasi data instansi dan periode magang.</x-slot>
 
                 <div class="mt-4 grid grid-cols-1 gap-5">
@@ -34,11 +39,16 @@
         </form>
 
         <x-filament::section icon="heroicon-o-information-circle">
-            <x-slot name="heading">Petunjuk</x-slot>
-            <ul class="space-y-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                <li class="flex gap-2"><span class="font-semibold text-gray-800 dark:text-gray-300">Nama Instansi</span> — dicetak pada kop laporan PDF.</li>
-                <li class="flex gap-2"><span class="font-semibold text-gray-800 dark:text-gray-300">Periode Magang</span> — menentukan kalkulasi hari ke- dan progress bar dashboard.</li>
-                <li class="flex gap-2"><span class="font-semibold text-gray-800 dark:text-gray-300">Simpan</span> — pastikan tanggal sudah benar sebelum menyimpan.</li>
+            <x-slot name="heading">
+                <div class="flex items-center gap-2">
+                    <x-filament::icon icon="heroicon-o-light-bulb" class="h-5 w-5 text-amber-500" />
+                    Petunjuk
+                </div>
+            </x-slot>
+            <ul class="space-y-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">Nama Instansi</span> — dicetak pada kop laporan PDF.</li>
+                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">Periode Magang</span> — menentukan kalkulasi hari ke- dan progress bar dashboard.</li>
+                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">Simpan</span> — pastikan tanggal sudah benar sebelum menyimpan.</li>
             </ul>
         </x-filament::section>
     </div>
