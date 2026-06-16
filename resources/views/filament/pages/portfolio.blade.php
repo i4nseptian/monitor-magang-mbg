@@ -17,8 +17,8 @@
                     <div class="min-w-0 text-center md:pb-1 md:text-left">
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $portfolioData['user']?->name ?? 'Nama Tidak Ditemukan' }}</h2>
                         @if($portfolioData['member'])
-                            <p class="mt-0.5 text-sm font-medium text-gray-500">{{ $portfolioData['member']->program_studi }}</p>
-                            <p class="text-xs tabular-nums text-gray-400">NIM {{ $portfolioData['member']->nim }} · {{ $portfolioData['member']->divisi }}</p>
+                            <p class="mt-0.5 text-sm font-medium text-gray-500 dark:text-gray-400">{{ $portfolioData['member']->program_studi }}</p>
+                            <p class="text-xs tabular-nums text-gray-400 dark:text-gray-500">NIM {{ $portfolioData['member']->nim }} · {{ $portfolioData['member']->divisi }}</p>
                         @endif
                     </div>
                 </div>
@@ -34,10 +34,10 @@
                 <div>
                     <div class="mb-1.5 flex justify-between text-sm">
                         <span class="font-medium text-gray-800 dark:text-gray-200">{{ $skill->skill_name }}</span>
-                        <span class="text-xs tabular-nums text-gray-500">{{ $skill->nilai_awal }}% → {{ $skill->nilai_akhir ?? '-' }}%</span>
+                        <span class="text-xs tabular-nums text-gray-500 dark:text-gray-400">{{ $skill->nilai_awal }}% → {{ $skill->nilai_akhir ?? '-' }}%</span>
                     </div>
-                    <div class="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
-                        <div class="h-full rounded-full bg-primary-600 transition-all dark:bg-primary-500" style="width: {{ $skill->nilai_akhir ?? $skill->nilai_awal }}%"></div>
+                    <div class="h-2 w-full overflow-hidden rounded-full bg-gray-100 transition-all duration-200 hover:shadow-sm dark:bg-gray-800">
+                        <div class="h-full rounded-full bg-primary-600 transition-all duration-700 ease-out hover:scale-y-150 hover:shadow-lg dark:bg-primary-500" style="width: {{ $skill->nilai_akhir ?? $skill->nilai_awal }}%"></div>
                     </div>
                 </div>
                 @endforeach
@@ -50,13 +50,13 @@
         <x-filament::section>
             <x-slot name="heading">
                 <div class="flex items-center gap-2">
-                    <x-filament::icon icon="heroicon-o-folder-open" class="h-5 w-5 text-primary-600" />
+                    <x-filament::icon icon="heroicon-o-folder-open" class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                     Project
                 </div>
             </x-slot>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 @foreach($portfolioData['projects'] as $project)
-                <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-900">
+                <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-gray-700 dark:bg-gray-900">
                     <div class="flex items-start justify-between gap-2">
                         <h4 class="font-semibold text-gray-900 dark:text-white">{{ $project->judul }}</h4>
                         <span @class([
@@ -87,13 +87,13 @@
             </x-slot>
             <div class="space-y-3">
                 @foreach($portfolioData['achievements'] as $achievement)
-                <div class="flex gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-900">
+                    <div class="flex gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-gray-700 dark:bg-gray-900">
                     @if($achievement->screenshot)
-                    <img src="{{ \Illuminate\Support\Facades\Storage::url($achievement->screenshot) }}" class="h-16 w-16 shrink-0 rounded-lg object-cover shadow-sm">
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url($achievement->screenshot) }}" class="h-16 w-16 shrink-0 rounded-lg object-cover shadow-sm ring-1 ring-gray-200 dark:ring-gray-700">
                     @endif
                     <div class="min-w-0">
                         <h4 class="font-semibold text-gray-900 dark:text-white">{{ $achievement->judul }}</h4>
-                        <p class="text-xs tabular-nums text-gray-400">{{ $achievement->tanggal?->format('d M Y') }}</p>
+                            <p class="text-xs tabular-nums text-gray-400 dark:text-gray-500">{{ $achievement->tanggal?->format('d M Y') }}</p>
                         <p class="mt-1 text-sm leading-relaxed text-gray-600 dark:text-gray-300">{{ strip_tags($achievement->deskripsi) }}</p>
                     </div>
                 </div>
@@ -111,10 +111,10 @@
                 <div>
                     <div class="mb-1.5 flex justify-between text-sm">
                         <span class="font-medium text-gray-800 dark:text-gray-200">{{ $target->target_name }}</span>
-                        <span class="text-xs tabular-nums text-gray-500">{{ $target->progress }}%</span>
+                        <span class="text-xs tabular-nums text-gray-500 dark:text-gray-400">{{ $target->progress }}%</span>
                     </div>
-                    <div class="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
-                        <div class="h-full rounded-full bg-emerald-500" style="width: {{ $target->progress }}%"></div>
+                    <div class="h-2 w-full overflow-hidden rounded-full bg-gray-100 transition-all duration-200 hover:shadow-sm dark:bg-gray-800">
+                        <div class="h-full rounded-full bg-emerald-500 transition-all duration-700 ease-out hover:scale-y-150 hover:shadow-lg" style="width: {{ $target->progress }}%"></div>
                     </div>
                 </div>
                 @endforeach

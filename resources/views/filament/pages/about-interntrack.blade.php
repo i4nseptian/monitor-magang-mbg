@@ -5,7 +5,7 @@
         <div class="rounded-xl border border-gray-200 bg-gradient-to-b from-white to-gray-50/50 p-8 text-center dark:border-gray-700 dark:from-gray-900 dark:to-gray-950/30">
             <img src="{{ asset('images/logo-mark.svg') }}" alt="InternTrack" class="mx-auto h-14 w-14">
             <h1 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">InternTrack</h1>
-            <p class="mt-1 text-sm font-medium text-gray-500">Monitoring & Dokumentasi Magang · Diskominfo Makassar</p>
+            <p class="mt-1 text-sm font-medium text-gray-500 dark:text-gray-400">Monitoring & Dokumentasi Magang · Diskominfo Makassar</p>
         </div>
 
         {{-- Tentang --}}
@@ -32,9 +32,9 @@
                     ['Dashboard Monitoring', 'Statistik dan grafik aktivitas real-time.'],
                     ['Portfolio', 'Ringkasan pencapaian setelah magang selesai.'],
                 ] as [$title, $desc])
-                    <div class="rounded-lg border border-gray-100 p-3 dark:border-gray-800">
+                    <div class="rounded-lg border border-gray-100 p-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-md dark:border-gray-800 dark:hover:border-primary-800 dark:hover:bg-gray-900/60">
                         <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $title }}</p>
-                        <p class="mt-0.5 text-xs text-gray-500">{{ $desc }}</p>
+                        <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{{ $desc }}</p>
                     </div>
                 @endforeach
             </div>
@@ -45,7 +45,7 @@
             <x-slot name="heading">Teknologi</x-slot>
             <div class="flex flex-wrap gap-2">
                 @foreach(['Laravel 12', 'Filament 3', 'MySQL', 'Tailwind CSS', 'DomPDF', 'Chart.js', 'Spatie Permission'] as $tech)
-                    <span class="rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
+                    <span class="rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-600 transition-all duration-200 hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 hover:shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:border-primary-700 dark:hover:bg-primary-950/30 dark:hover:text-primary-300">
                         {{ $tech }}
                     </span>
                 @endforeach

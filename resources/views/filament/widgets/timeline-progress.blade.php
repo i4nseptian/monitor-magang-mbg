@@ -39,17 +39,17 @@
         </div>
 
         <div class="mt-5 grid grid-cols-3 gap-3">
-            <div class="rounded-xl border border-gray-100 bg-gradient-to-b from-gray-50/90 to-white p-3 text-center shadow-sm transition hover:shadow dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
+            <div class="rounded-xl border border-gray-100 bg-gradient-to-b from-gray-50/90 to-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
                 <p class="text-xl font-bold tabular-nums text-gray-900 dark:text-white">{{ $total_hari }}</p>
-                <p class="mt-0.5 text-[11px] font-semibold text-gray-500">Total Hari</p>
+                <p class="mt-0.5 text-[11px] font-semibold text-gray-500 dark:text-gray-400">Total Hari</p>
             </div>
-            <div class="rounded-xl border border-primary-100 bg-gradient-to-b from-primary-50/90 to-white p-3 text-center shadow-sm transition hover:shadow dark:border-primary-900/50 dark:from-primary-950/40 dark:to-gray-900/20">
+            <div class="rounded-xl border border-primary-100 bg-gradient-to-b from-primary-50/90 to-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:border-primary-900/50 dark:from-primary-950/40 dark:to-gray-900/20">
                 <p class="text-xl font-bold tabular-nums text-primary-700 dark:text-primary-400">{{ $hari_berjalan }}</p>
                 <p class="mt-0.5 text-[11px] font-semibold text-primary-600/80 dark:text-primary-400/80">Sudah Dilalui</p>
             </div>
-            <div class="rounded-xl border border-gray-100 bg-gradient-to-b from-gray-50/90 to-white p-3 text-center shadow-sm transition hover:shadow dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
+            <div class="rounded-xl border border-gray-100 bg-gradient-to-b from-gray-50/90 to-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:border-gray-800 dark:from-gray-900/60 dark:to-gray-900/20">
                 <p class="text-xl font-bold tabular-nums text-gray-700 dark:text-gray-300">{{ $hari_tersisa }}</p>
-                <p class="mt-0.5 text-[11px] font-semibold text-gray-500">Sisa Hari</p>
+                <p class="mt-0.5 text-[11px] font-semibold text-gray-500 dark:text-gray-400">Sisa Hari</p>
             </div>
         </div>
     </x-filament::section>

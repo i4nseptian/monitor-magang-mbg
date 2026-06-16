@@ -4,7 +4,7 @@
             <x-filament::section>
                 <x-slot name="heading">
                     <div class="flex items-center gap-2">
-                        <x-filament::icon icon="heroicon-o-cog-6-tooth" class="h-5 w-5 text-gray-500" />
+                        <x-filament::icon icon="heroicon-o-cog-6-tooth" class="h-5 w-5 text-gray-500 dark:text-gray-400" />
                         Pengaturan Umum
                     </div>
                 </x-slot>
@@ -46,9 +46,9 @@
                 </div>
             </x-slot>
             <ul class="space-y-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">Nama Instansi</span> — dicetak pada kop laporan PDF.</li>
-                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">Periode Magang</span> — menentukan kalkulasi hari ke- dan progress bar dashboard.</li>
-                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">Simpan</span> — pastikan tanggal sudah benar sebelum menyimpan.</li>
+                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-950/30 dark:hover:text-primary-300">Nama Instansi</span> — dicetak pada kop laporan PDF.</li>
+                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-950/30 dark:hover:text-primary-300">Periode Magang</span> — menentukan kalkulasi hari ke- dan progress bar dashboard.</li>
+                <li class="flex gap-2"><span class="shrink-0 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-950/30 dark:hover:text-primary-300">Simpan</span> — pastikan tanggal sudah benar sebelum menyimpan.</li>
             </ul>
         </x-filament::section>
     </div>

@@ -6,19 +6,19 @@
             <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div class="space-y-4 md:col-span-2">
                     <div>
-                        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
                             <x-filament::icon icon="heroicon-o-chart-bar" class="h-4 w-4" />
                             Progres Magang
                         </div>
                         <div class="mt-1.5 flex items-baseline gap-2">
                             <span class="text-3xl font-bold text-primary-700 dark:text-primary-400">{{ $progressPercent }}%</span>
-                            <span class="text-xs tabular-nums text-gray-400">({{ $daysElapsed }} / {{ $totalDays }} hari)</span>
+                            <span class="text-xs tabular-nums text-gray-400 dark:text-gray-500">({{ $daysElapsed }} / {{ $totalDays }} hari)</span>
                         </div>
                     </div>
                     <div class="relative h-2.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
                         <div class="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-700 transition-all duration-700 ease-out dark:from-primary-400 dark:to-primary-600" style="width: {{ $progressPercent }}%"></div>
                     </div>
-                    <div class="flex items-center justify-between text-xs tabular-nums text-gray-500">
+                    <div class="flex items-center justify-between text-xs tabular-nums text-gray-500 dark:text-gray-400">
                         <span>{{ $tglMulai->translatedFormat('d M Y') }}</span>
                         <span>{{ $tglSelesai->translatedFormat('d M Y') }}</span>
                     </div>
@@ -52,7 +52,7 @@
             @else
                 @foreach($timelineEvents as $event)
                     <div class="relative pl-8 md:pl-10">
-                        <span class="absolute -left-[9px] top-2 h-3.5 w-3.5 rounded-full border-[3px] border-white bg-primary-600 ring-2 ring-primary-100 dark:border-gray-900 dark:ring-primary-900"></span>
+                        <span class="absolute -left-[9px] top-2 h-3.5 w-3.5 rounded-full border-[3px] border-white bg-primary-600 ring-2 ring-primary-100 dark:border-gray-900 dark:bg-primary-500 dark:ring-primary-900"></span>
 
                         <article class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-900">
                             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 px-4 py-3 sm:px-5 dark:border-gray-800">
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="min-w-0">
                                         <h4 class="text-sm font-semibold text-gray-900 dark:text-white">{{ $event->user->name }}</h4>
-                                        <p class="text-[11px] tabular-nums text-gray-400">Hari ke-{{ $event->hari_ke }} · {{ $event->tanggal->translatedFormat('d M Y') }}</p>
+                                        <p class="text-[11px] tabular-nums text-gray-400 dark:text-gray-500">Hari ke-{{ $event->hari_ke }} · {{ $event->tanggal->translatedFormat('d M Y') }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-1.5">
