@@ -31,23 +31,12 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logo-mark.svg'))
             ->brandLogoHeight('2rem')
             ->favicon(asset('images/logo-mark.svg'))
-            ->font('Plus Jakarta Sans')
+            ->font('Inter')
             ->colors([
-                'primary' => [
-                    50 => '240, 244, 248',
-                    100 => '217, 226, 236',
-                    200 => '188, 204, 220',
-                    300 => '159, 179, 200',
-                    400 => '130, 154, 177',
-                    500 => '98, 125, 152',
-                    600 => '72, 101, 129',
-                    700 => '51, 78, 104',
-                    800 => '30, 58, 95',
-                    900 => '16, 42, 67',
-                    950 => '10, 26, 43',
-                ],
+                'primary' => Color::Indigo,
                 'gray' => Color::Slate,
             ])
+
             ->darkMode(true)
             ->breadcrumbs(true)
             ->globalSearch()

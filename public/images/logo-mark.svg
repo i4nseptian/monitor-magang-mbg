@@ -1,8 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
-  <rect width="40" height="40" rx="10" fill="#1e3a5f"/>
-  <path d="M12 11h16a1 1 0 011 1v3H11v-3a1 1 0 011-1z" fill="#fff" opacity=".9"/>
-  <path d="M11 17h18v12a1 1 0 01-1 1H12a1 1 0 01-1-1V17z" fill="#fff" opacity=".15"/>
-  <path d="M14 20h5v1.5h-5V20zm0 3.5h8v1.5h-8V23.5zm0 3.5h6v1.5h-6V27z" fill="#fff"/>
-  <circle cx="28" cy="26" r="4" fill="#38bdf8"/>
-  <path d="M27 26l1 1 2-2" stroke="#1e3a5f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="4" y="4" width="112" height="112" rx="28" fill="#ffffff" stroke="url(#brandGrad)" stroke-width="1.5"/>
+  <rect x="12" y="12" width="96" height="96" rx="22" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+  <g filter="url(#shadow)">
+    <path d="M28 72 C42 48 60 72 76 36 L92 36" stroke="url(#brandGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="28" cy="72" r="8" fill="#4f46e5" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="28" cy="72" r="3" fill="#ffffff"/>
+    <circle cx="52" cy="58" r="8" fill="#06b6d4" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="52" cy="58" r="3" fill="#ffffff"/>
+    <circle cx="76" cy="36" r="11" fill="url(#checkGrad)" stroke="#ffffff" stroke-width="2.5"/>
+    <path d="M71.5 36 L75 39.5 L81.5 33" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>

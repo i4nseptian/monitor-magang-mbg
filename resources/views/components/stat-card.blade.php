@@ -8,39 +8,61 @@
 
 @php
     $colorMap = [
-        'primary' => 'bg-primary-50 text-primary-700 dark:bg-primary-950/50 dark:text-primary-300 border-primary-200/60 dark:border-primary-800',
-        'success' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border-emerald-200/60 dark:border-emerald-800',
-        'warning' => 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300 border-amber-200/60 dark:border-amber-800',
-        'danger' => 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300 border-red-200/60 dark:border-red-800',
-        'info' => 'bg-sky-50 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300 border-sky-200/60 dark:border-sky-800',
+        'primary' => [
+            'bg' => 'bg-indigo-50/60 dark:bg-indigo-950/30',
+            'border' => 'border-indigo-200/50 dark:border-indigo-900/40',
+            'text' => 'text-indigo-600 dark:text-indigo-400',
+            'hoverGlow' => 'hover:shadow-indigo-500/10 dark:hover:shadow-indigo-500/5',
+            'iconBg' => 'bg-indigo-100 dark:bg-indigo-950/50',
+        ],
+        'success' => [
+            'bg' => 'bg-emerald-50/60 dark:bg-emerald-950/30',
+            'border' => 'border-emerald-200/50 dark:border-emerald-900/40',
+            'text' => 'text-emerald-600 dark:text-emerald-400',
+            'hoverGlow' => 'hover:shadow-emerald-500/10 dark:hover:shadow-emerald-500/5',
+            'iconBg' => 'bg-emerald-100 dark:bg-emerald-950/50',
+        ],
+        'warning' => [
+            'bg' => 'bg-amber-50/60 dark:bg-amber-950/30',
+            'border' => 'border-amber-200/50 dark:border-amber-900/40',
+            'text' => 'text-amber-600 dark:text-amber-400',
+            'hoverGlow' => 'hover:shadow-amber-500/10 dark:hover:shadow-amber-500/5',
+            'iconBg' => 'bg-amber-100 dark:bg-amber-950/50',
+        ],
+        'danger' => [
+            'bg' => 'bg-rose-50/60 dark:bg-rose-950/30',
+            'border' => 'border-rose-200/50 dark:border-rose-900/40',
+            'text' => 'text-rose-600 dark:text-rose-400',
+            'hoverGlow' => 'hover:shadow-rose-500/10 dark:hover:shadow-rose-500/5',
+            'iconBg' => 'bg-rose-100 dark:bg-rose-950/50',
+        ],
+        'info' => [
+            'bg' => 'bg-cyan-50/60 dark:bg-cyan-950/30',
+            'border' => 'border-cyan-200/50 dark:border-cyan-900/40',
+            'text' => 'text-cyan-600 dark:text-cyan-400',
+            'hoverGlow' => 'hover:shadow-cyan-500/10 dark:hover:shadow-cyan-500/5',
+            'iconBg' => 'bg-cyan-100 dark:bg-cyan-950/50',
+        ],
     ];
-    $cardColor = $colorMap[$color] ?? $colorMap['primary'];
-    $iconColor = match ($color) {
-        'primary' => 'text-primary-600 dark:text-primary-400',
-        'success' => 'text-emerald-600 dark:text-emerald-400',
-        'warning' => 'text-amber-600 dark:text-amber-400',
-        'danger' => 'text-red-600 dark:text-red-400',
-        'info' => 'text-sky-600 dark:text-sky-400',
-        default => 'text-gray-600',
-    };
+
+    $theme = $colorMap[$color] ?? $colorMap['primary'];
 @endphp
 
-<div {{ $attributes->merge(['class' => 'group relative overflow-hidden rounded-xl border bg-white dark:bg-gray-900 p-5 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] ' . $cardColor]) }}>
-    <div class="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-current opacity-[0.07] transition-all duration-500 group-hover:scale-150 group-hover:opacity-[0.12]"></div>
-    <div class="absolute -bottom-6 -left-6 h-16 w-16 rounded-full bg-current opacity-[0.04]"></div>
-
-    <div class="relative">
+<div {{ $attributes->merge(['class' => 'group relative overflow-hidden rounded-xl border bg-white dark:bg-[#0d121c] p-4 sm:p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ' . $theme['border'] . ' ' . $theme['hoverGlow']]) }}>
+    <div class="flex items-center justify-between mb-3">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">{{ $label }}</span>
         @if($icon)
-            <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-current/10 text-current transition-transform duration-300 group-hover:scale-110">
+            <div class="flex h-7 w-7 items-center justify-center rounded-lg {{ $theme['iconBg'] }} {{ $theme['text'] }} transition-all duration-200 group-hover:scale-110">
                 {!! $icon !!}
             </div>
         @endif
-        <p class="text-2xl font-bold tracking-tight tabular-nums text-gray-900 dark:text-white transition-colors duration-300">{{ $value }}</p>
-        <p class="mt-1 text-xs font-semibold text-gray-500 dark:text-gray-400">{{ $label }}</p>
-        @if($trend)
-            <p class="mt-2 flex items-center gap-1 text-[11px] font-medium text-gray-400 transition-colors duration-300 dark:text-gray-500">
-                {{ $trend }}
-            </p>
-        @endif
     </div>
+    
+    <p class="text-xl sm:text-2xl font-bold tracking-tight tabular-nums text-gray-900 dark:text-white">{{ $value }}</p>
+
+    @if($trend)
+        <div class="flex items-center gap-1 text-[11px] font-medium text-gray-400 dark:text-gray-500 pt-2 mt-3 border-t border-gray-100 dark:border-gray-800">
+            {{ $trend }}
+        </div>
+    @endif
 </div>

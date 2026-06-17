@@ -1,34 +1,46 @@
 <x-filament-panels::page>
     <div class="space-y-6">
 
-        {{-- Card Progress Magang --}}
-        <div class="rounded-xl border border-gray-200 bg-white p-5 sm:p-6 dark:border-gray-700 dark:bg-gray-900">
+        <div class="rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-gray-900/80 p-5 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300">
             <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div class="space-y-4 md:col-span-2">
                     <div>
-                        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                            <x-filament::icon icon="heroicon-o-chart-bar" class="h-4 w-4" />
-                            Progres Magang
+                        <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                            <div class="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-brand-500 to-brand-600 text-white">
+                                <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+                                </svg>
+                            </div>
+                            Progres Pelaksanaan Magang
                         </div>
-                        <div class="mt-1.5 flex items-baseline gap-2">
-                            <span class="text-3xl font-bold text-primary-700 dark:text-primary-400">{{ $progressPercent }}%</span>
-                            <span class="text-xs tabular-nums text-gray-400 dark:text-gray-500">({{ $daysElapsed }} / {{ $totalDays }} hari)</span>
+                        <div class="mt-2 flex items-baseline gap-2">
+                            <span class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-400 dark:from-brand-400 dark:to-brand-300 font-display">{{ $progressPercent }}%</span>
+                            <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 tabular-nums">({{ $daysElapsed }} / {{ $totalDays }} Hari Berjalan)</span>
                         </div>
                     </div>
-                    <div class="relative h-2.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
-                        <div class="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-700 transition-all duration-700 ease-out dark:from-primary-400 dark:to-primary-600" style="width: {{ $progressPercent }}%"></div>
+                    
+                    <div class="relative h-3.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 shadow-inner">
+                        <div class="h-full rounded-full bg-gradient-to-r from-brand-500 via-brand-400 to-accent-cyan transition-all duration-1000 ease-out shadow-lg shadow-brand-500/20" style="width: {{ $progressPercent }}%"></div>
                     </div>
-                    <div class="flex items-center justify-between text-xs tabular-nums text-gray-500 dark:text-gray-400">
-                        <span>{{ $tglMulai->translatedFormat('d M Y') }}</span>
-                        <span>{{ $tglSelesai->translatedFormat('d M Y') }}</span>
+                    
+                    <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 tabular-nums">
+                        <span class="flex items-center gap-1.5">
+                            <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            {{ $tglMulai->translatedFormat('d M Y') }}
+                        </span>
+                        <span class="h-px w-8 bg-slate-200 dark:bg-slate-700"></span>
+                        <span class="flex items-center gap-1.5">
+                            <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            {{ $tglSelesai->translatedFormat('d M Y') }}
+                        </span>
                     </div>
                 </div>
 
                 @if(!auth()->user()->isMahasiswa())
-                    <div class="border-t border-gray-100 pt-4 md:border-l md:border-t-0 md:pl-6 md:pt-0 dark:border-gray-800">
-                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Filter Mahasiswa</label>
+                    <div class="border-t border-slate-100 dark:border-slate-800 pt-5 md:border-l md:border-t-0 md:pl-6 md:pt-0">
+                        <label class="mb-2 block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Filter Mahasiswa</label>
                         <select wire:model.live="selectedUserId"
-                            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm transition focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-slate-800 dark:text-white shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
                             <option value="">Semua Mahasiswa</option>
                             @foreach($mahasiswaList as $mhs)
                                 <option value="{{ $mhs->id }}">{{ $mhs->name }}</option>
@@ -39,49 +51,77 @@
             </div>
         </div>
 
-        {{-- Timeline Stream --}}
-        <div class="relative ml-4 space-y-6 border-l-2 border-gray-200 pb-8 dark:border-gray-700 md:ml-5">
+        <div class="relative ml-5 space-y-6 border-l-2 border-slate-200 dark:border-slate-700 pb-8 md:ml-6">
             @if($timelineEvents->isEmpty())
                 <div class="flex flex-col items-center justify-center py-16 pl-8 text-center md:pl-10">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-gray-50 dark:bg-gray-800">
-                        <x-filament::icon icon="heroicon-o-clock" class="h-6 w-6 text-gray-300 dark:text-gray-600" />
+                    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 shadow-sm">
+                        <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
                     </div>
-                    <p class="mt-3 text-sm font-medium text-gray-500 dark:text-gray-400">Belum ada logbook untuk filter ini.</p>
-                    <p class="mt-0.5 text-xs text-gray-400 dark:text-gray-500">Pilih mahasiswa lain atau buat entri baru.</p>
+                    <p class="mt-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Belum ada logbook untuk filter ini.</p>
+                    <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">Pilih mahasiswa lain atau buat entri logbook baru.</p>
                 </div>
             @else
                 @foreach($timelineEvents as $event)
-                    <div class="relative pl-8 md:pl-10">
-                        <span class="absolute -left-[9px] top-2 h-3.5 w-3.5 rounded-full border-[3px] border-white bg-primary-600 ring-2 ring-primary-100 dark:border-gray-900 dark:bg-primary-500 dark:ring-primary-900"></span>
+                    <div class="relative pl-8 md:pl-10 group">
+                        
+                        <span class="absolute -left-[9px] top-5 h-4 w-4 rounded-full border-4 border-white dark:border-gray-900 bg-brand-600 dark:bg-brand-500 shadow-sm ring-4 ring-brand-50 dark:ring-brand-950/40 transition-transform duration-300 group-hover:scale-125"></span>
 
-                        <article class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-900">
-                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 px-4 py-3 sm:px-5 dark:border-gray-800">
+                        <article class="overflow-hidden rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-gray-900/80 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700">
+                            
+                            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 px-5 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-50 text-xs font-bold text-primary-700 dark:bg-primary-950 dark:text-primary-300">
-                                        {{ strtoupper(substr($event->user->name, 0, 2)) }}
+                                    @php
+                                        $words = explode(' ', $event->user->name);
+                                        $initials = count($words) >= 2
+                                            ? strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1))
+                                            : strtoupper(substr($event->user->name, 0, 2));
+                                    @endphp
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 text-xs font-bold text-white shadow-md">
+                                        {{ $initials }}
                                     </div>
                                     <div class="min-w-0">
-                                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">{{ $event->user->name }}</h4>
-                                        <p class="text-[11px] tabular-nums text-gray-400 dark:text-gray-500">Hari ke-{{ $event->hari_ke }} · {{ $event->tanggal->translatedFormat('d M Y') }}</p>
+                                        <h4 class="text-sm font-bold text-slate-800 dark:text-white">{{ $event->user->name }}</h4>
+                                        <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 flex items-center gap-1.5 mt-0.5 uppercase tracking-wide">
+                                            <span>Hari ke-{{ $event->hari_ke }}</span>
+                                            <span class="text-slate-300 dark:text-slate-600">·</span>
+                                            <span>{{ $event->tanggal->translatedFormat('d M Y') }}</span>
+                                        </p>
                                     </div>
                                 </div>
-                                <div class="flex flex-wrap items-center gap-1.5">
-                                    <span class="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">{{ $event->kategori_kegiatan }}</span>
-                                    <span class="rounded-md bg-primary-50 px-2 py-0.5 text-[11px] font-medium tabular-nums text-primary-700 dark:bg-primary-950 dark:text-primary-300">{{ $event->jam_mulai->format('H:i') }}–{{ $event->jam_selesai->format('H:i') }}</span>
+                                
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-1 text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wide">{{ $event->kategori_kegiatan }}</span>
+                                    <span class="rounded-lg bg-gradient-to-r from-brand-50 to-brand-50/80 dark:from-brand-950/50 dark:to-brand-950/30 px-3 py-1 text-[10px] font-bold text-brand-700 dark:text-brand-400 uppercase tracking-wider tabular-nums">{{ $event->jam_mulai->format('H:i') }} – {{ $event->jam_selesai->format('H:i') }}</span>
+                                    @if(isset($event->mood))
+                                        <span class="text-sm" title="Mood: {{ $event->mood }}">
+                                            @php
+                                                $moodEmoji = match($event->mood) {
+                                                    'Senang' => '😊',
+                                                    'Biasa' => '😐',
+                                                    'Lelah' => '😴',
+                                                    'Sedih' => '😢',
+                                                    default => '📝'
+                                                };
+                                            @endphp
+                                            {{ $moodEmoji }}
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
-                            <div class="space-y-3 p-4 sm:p-5">
-                                <h3 class="font-semibold text-gray-900 dark:text-white">{{ $event->judul_kegiatan }}</h3>
-                                <div class="prose prose-sm max-w-none leading-relaxed text-gray-600 dark:prose-invert dark:text-gray-300">
+                            <div class="space-y-4 p-5">
+                                <h3 class="font-bold text-slate-900 dark:text-white text-base font-display">{{ $event->judul_kegiatan }}</h3>
+                                <div class="prose prose-sm max-w-none leading-relaxed text-slate-600 dark:prose-invert dark:text-slate-400 font-light">
                                     {!! $event->deskripsi_kegiatan !!}
                                 </div>
 
                                 @if($event->photos->isNotEmpty())
-                                    <div class="grid grid-cols-2 gap-2 pt-1 sm:grid-cols-4">
+                                    <div class="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-4 lg:grid-cols-6">
                                         @foreach($event->photos as $photo)
-                                            <a href="{{ asset('storage/' . $photo->photo_path) }}" target="_blank" class="group block overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
-                                                <img src="{{ asset('storage/' . $photo->photo_path) }}" alt="Dokumentasi" class="h-24 w-full object-cover transition duration-300 group-hover:scale-105">
+                                            <a href="{{ asset('storage/' . $photo->photo_path) }}" target="_blank" class="group block overflow-hidden rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-lg">
+                                                <img src="{{ asset('storage/' . $photo->photo_path) }}" alt="Dokumentasi" class="h-28 w-full object-cover transition duration-300 group-hover:opacity-90">
                                             </a>
                                         @endforeach
                                     </div>
@@ -91,7 +131,7 @@
                     </div>
                 @endforeach
 
-                <div class="flex justify-center pl-8 pt-4 md:pl-10">
+                <div class="flex justify-center pl-8 pt-6 md:pl-10">
                     <div class="[&_.pagination]:gap-1">
                         {{ $timelineEvents->links() }}
                     </div>
