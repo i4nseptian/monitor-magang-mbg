@@ -9,29 +9,13 @@
 <div class="mb-6 space-y-4">
 
     {{-- Greeting Card — Metronic clean style --}}
-    <div class="rounded-xl border border-[oklch(94%_0.004_286.32)] dark:border-[oklch(22%_0.01_260)] bg-white dark:bg-[#161920] p-5 shadow-[0_1px_2px_rgb(0_0_0/0.05)]">
-        <div class="flex items-center justify-between gap-4">
-            <div class="min-w-0 flex-1">
-                <div class="flex flex-wrap items-center gap-2 mb-2.5">
-                    <span class="inline-flex items-center rounded px-2 py-0.5 text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800">
-                        {{ $roleLabel }}
-                    </span>
-                    @if ($hariKe > 0)
-                        <span class="inline-flex items-center rounded px-2 py-0.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40">
-                            Hari ke-{{ $hariKe }}
-                        </span>
-                    @endif
-                    @if (isset($hariTersisa) && $hariTersisa > 0)
-                        <span class="inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30">
-                            <span class="kt-dot kt-dot-warning"></span>
-                            {{ $hariTersisa }} hari tersisa
-                        </span>
-                    @endif
-                </div>
-                <h1 class="text-lg font-semibold text-slate-900 dark:text-white leading-tight">
+    <div class="rounded-xl border border-[oklch(94%_0.004_286.32)] dark:border-[oklch(22%_0.01_260)] bg-white dark:bg-[#161920] p-6 shadow-[0_1px_2px_rgb(0_0_0/0.05)]">
+        <div class="flex items-center justify-between gap-5">
+            <div class="min-w-0 flex-1 space-y-2">
+                <h1 class="text-xl font-bold text-slate-900 dark:text-white leading-snug">
                     {{ $greeting }}, {{ $user->name }}
                 </h1>
-                <p class="mt-1 text-sm text-slate-400 dark:text-slate-500 font-medium">
+                <p class="text-sm text-slate-400 dark:text-slate-500">
                     Diskominfo Makassar &middot; {{ now()->translatedFormat('l, d F Y') }}
                 </p>
             </div>
@@ -41,9 +25,9 @@
                         <img src="{{ asset('storage/' . $user->member->foto_profil) }}" alt="" class="h-full w-full object-cover">
                     </div>
                 @else
-                    <div class="h-11 w-11 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center ring-1 ring-slate-200 dark:ring-slate-700">
-                        <svg class="h-5 w-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                    <div class="h-11 w-11 rounded-full bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center ring-1 ring-indigo-200 dark:ring-indigo-700">
+                        <svg class="h-5 w-5 text-indigo-600 dark:text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm-7 9a7 7 0 0 1 14 0H5Z"/>
                         </svg>
                     </div>
                 @endif

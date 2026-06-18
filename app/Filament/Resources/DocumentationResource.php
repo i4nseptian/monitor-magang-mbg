@@ -80,6 +80,7 @@ class DocumentationResource extends Resource
                             ->image()
                             ->directory('documentations')
                             ->maxSize(20480)
+                            ->rules(['mimetypes:image/jpeg,image/png,image/webp'])
                             ->imageResizeMode('contain')
                             ->imageResizeTargetWidth(1920)
                             ->imageResizeTargetHeight(1080)

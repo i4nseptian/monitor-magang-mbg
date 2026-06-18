@@ -49,10 +49,12 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('password')
                             ->label('Password')
                             ->password()
+                            ->minLength(8)
+                            ->rules(['regex:/[A-Z]/', 'regex:/[a-z]/', 'regex:/[0-9]/'])
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create')
-                            ->placeholder('Kosongkan jika tidak ingin mengubah password'),
+                            ->placeholder('Minimal 8 karakter, huruf besar, huruf kecil, angka'),
 
                         Forms\Components\Select::make('roles')
                             ->label('Role Akses')

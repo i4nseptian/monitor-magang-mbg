@@ -60,6 +60,7 @@ class AchievementResource extends Resource
                             ->image()
                             ->directory('achievements')
                             ->maxSize(5120)
+                            ->rules(['mimetypes:image/jpeg,image/png,image/webp'])
                             ->columnSpanFull(),
                     ])
                     ->columns(2)

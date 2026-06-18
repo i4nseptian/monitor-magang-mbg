@@ -88,6 +88,7 @@ class MemberResource extends Resource
                             ->imageResizeTargetWidth('200')
                             ->imageResizeTargetHeight('200')
                             ->maxSize(2048)
+                            ->rules(['mimetypes:image/jpeg,image/png,image/webp'])
                             ->columnSpanFull(),
                     ])
                     ->columns(2)

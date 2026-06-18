@@ -58,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                'throttle:60,1',
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),

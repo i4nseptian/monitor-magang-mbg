@@ -39,8 +39,8 @@
     @else
         @if (count($missing_students) > 0)
             {{-- Warning: mahasiswa belum isi — Metronic list style --}}
-            <div class="flex items-start gap-3.5 rounded-xl border border-[oklch(94%_0.004_286.32)] dark:border-[oklch(22%_0.01_260)] bg-white dark:bg-[#161920] p-4 shadow-[0_1px_2px_rgb(0_0_0/0.05)]">
-                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400">
+            <div class="flex items-start gap-4 rounded-xl border border-[oklch(94%_0.004_286.32)] dark:border-[oklch(22%_0.01_260)] bg-white dark:bg-[#161920] p-4 shadow-[0_1px_2px_rgb(0_0_0/0.05)]">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 mr-3">
                     <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                     </svg>
@@ -48,9 +48,9 @@
                 <div class="min-w-0 flex-1">
                     <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200">Belum mengisi logbook hari ini</h4>
                     <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400 tabular-nums">{{ count($missing_students) }} mahasiswa belum mengisi</p>
-                    <div class="mt-2.5 flex flex-wrap gap-1.5">
+                    <div class="mt-3 flex flex-wrap gap-1.5">
                         @foreach ($missing_students as $name)
-                            <span class="inline-flex items-center rounded px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800">
+                            <span class="inline-flex items-center rounded-md px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/60">
                                 {{ $name }}
                             </span>
                         @endforeach

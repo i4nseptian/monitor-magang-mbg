@@ -133,6 +133,7 @@ class LogbookResource extends Resource
                             ->image()
                             ->directory('logbooks')
                             ->maxSize(5120)
+                            ->rules(['mimetypes:image/jpeg,image/png,image/webp'])
                             ->helperText('Bisa upload lebih dari 1 foto. Maksimal 5MB per file.')
                             ->columnSpanFull(),
                     ])
