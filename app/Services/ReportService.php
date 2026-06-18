@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Achievement;
 use App\Models\Attendance;
 use App\Models\Documentation;
+use App\Models\DocumentationPhoto;
 use App\Models\InternshipSetting;
 use App\Models\Logbook;
 use App\Models\MentorNote;
@@ -50,8 +51,8 @@ class ReportService
         // Timeline info
         $tglMulai = Carbon::parse(InternshipSetting::getValue('tanggal_mulai', '2026-06-08'));
         $tglSelesai = Carbon::parse(InternshipSetting::getValue('tanggal_selesai', '2026-08-28'));
-        $totalHari = $tglMulai->diffInDays($tglSelesai) + 1;
-        $hariBerjalan = min($tglMulai->diffInDays(Carbon::now()) + 1, $totalHari);
+        $totalHari = (int) $tglMulai->diffInDays($tglSelesai) + 1;
+        $hariBerjalan = min((int) $tglMulai->diffInDays(Carbon::now()) + 1, $totalHari);
         $persentase = round(($hariBerjalan / $totalHari) * 100);
 
         // ─── Process logbook-derived stats from $logbooks (already fetched) ───
@@ -191,23 +192,28 @@ class ReportService
     {
         $tglMulai = Carbon::parse(InternshipSetting::getValue('tanggal_mulai', '2026-06-08'));
         $tglSelesai = Carbon::parse(InternshipSetting::getValue('tanggal_selesai', '2026-08-28'));
-        $totalHari = $tglMulai->diffInDays($tglSelesai) + 1;
+        $totalHari = (int) $tglMulai->diffInDays($tglSelesai) + 1;
 
-        $totalLogbook = Logbook::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalDokumentasi = Documentation::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalFoto = 0;
-        foreach (Documentation::when($userId, fn ($q) => $q->where('user_id', $userId))->withCount('photos')->get() as $doc) {
-            $totalFoto += $doc->photos_count;
-        }
-        $totalProject = Project::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalEvaluasi = MentorNote::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalAchievements = Achievement::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalSkills = SkillDevelopment::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalTargets = Target::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalAttendance = Attendance::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalIzin = Attendance::when($userId, fn ($q) => $q->where('user_id', $userId))->where('status', 'Izin')->count();
-        $totalSakit = Attendance::when($userId, fn ($q) => $q->where('user_id', $userId))->where('status', 'Sakit')->count();
-        $totalAlpha = Attendance::when($userId, fn ($q) => $q->where('user_id', $userId))->where('status', 'Alpha')->count();
+        $base = $userId ? [['user_id', '=', $userId]] : [];
+        $totalLogbook = Logbook::where($base)->count();
+        $totalDokumentasi = Documentation::where($base)->count();
+        $totalFoto = DocumentationPhoto::whereIn('documentation_id',
+            Documentation::select('id')->where($base)
+        )->count();
+        $totalProject = Project::where($base)->count();
+        $totalEvaluasi = MentorNote::where($base)->count();
+        $totalAchievements = Achievement::where($base)->count();
+        $totalSkills = SkillDevelopment::where($base)->count();
+        $totalTargets = Target::where($base)->count();
+
+        $attendanceCounts = Attendance::where($base)
+            ->select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status');
+        $totalAttendance = $attendanceCounts->sum();
+        $totalIzin = (int) ($attendanceCounts['Izin'] ?? 0);
+        $totalSakit = (int) ($attendanceCounts['Sakit'] ?? 0);
+        $totalAlpha = (int) ($attendanceCounts['Alpha'] ?? 0);
         $totalHadirAktual = $totalAttendance - $totalIzin - $totalSakit - $totalAlpha;
         $persenHadir = $totalAttendance > 0 ? round($totalHadirAktual / $totalAttendance * 100, 1) : 0;
 
@@ -252,20 +258,28 @@ class ReportService
      */
     public function getQuickStats(?int $userId = null): array
     {
-        $totalLogbook = Logbook::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalDokumentasi = Documentation::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalCatatanMentor = MentorNote::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalSkill = SkillDevelopment::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalProject = Project::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
-        $totalAttendance = Attendance::when($userId, fn ($q) => $q->where('user_id', $userId))->count();
+        $results = DB::select("
+            SELECT
+                (SELECT COUNT(*) FROM logbooks " . ($userId ? "WHERE user_id = ?" : "") . ") as total_logbook,
+                (SELECT COUNT(*) FROM documentations " . ($userId ? "WHERE user_id = ?" : "") . ") as total_dokumentasi,
+                (SELECT COUNT(*) FROM mentor_notes " . ($userId ? "WHERE user_id = ?" : "") . ") as total_catatan_mentor,
+                (SELECT COUNT(*) FROM skill_developments " . ($userId ? "WHERE user_id = ?" : "") . ") as total_skill,
+                (SELECT COUNT(*) FROM projects " . ($userId ? "WHERE user_id = ?" : "") . ") as total_project,
+                (SELECT COUNT(*) FROM attendances " . ($userId ? "WHERE user_id = ?" : "") . ") as total_attendance
+        ", $userId ? array_fill(0, 6, $userId) : []);
 
-        return compact(
-            'totalLogbook',
-            'totalDokumentasi',
-            'totalCatatanMentor',
-            'totalSkill',
-            'totalProject',
-            'totalAttendance'
-        );
+        $row = $results[0] ?? (object) [
+            'total_logbook' => 0, 'total_dokumentasi' => 0, 'total_catatan_mentor' => 0,
+            'total_skill' => 0, 'total_project' => 0, 'total_attendance' => 0,
+        ];
+
+        return [
+            'totalLogbook' => $row->total_logbook,
+            'totalDokumentasi' => $row->total_dokumentasi,
+            'totalCatatanMentor' => $row->total_catatan_mentor,
+            'totalSkill' => $row->total_skill,
+            'totalProject' => $row->total_project,
+            'totalAttendance' => $row->total_attendance,
+        ];
     }
 }

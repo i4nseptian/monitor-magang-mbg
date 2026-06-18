@@ -34,7 +34,7 @@ class StatsOverview extends BaseWidget
         $tglSelesai = Carbon::parse($tglSelesaiStr);
         $tglSekarang = Carbon::now();
 
-        $totalHariMagang = $tglMulai->diffInDays($tglSelesai) + 1;
+        $totalHariMagang = (int) $tglMulai->diffInDays($tglSelesai) + 1;
 
         if ($tglSekarang->lt($tglMulai)) {
             $hariKe = 0;
@@ -43,7 +43,7 @@ class StatsOverview extends BaseWidget
             $hariKe = $totalHariMagang;
             $progresPercent = 100;
         } else {
-            $hariKe = $tglMulai->diffInDays($tglSekarang) + 1;
+            $hariKe = (int) $tglMulai->diffInDays($tglSekarang) + 1;
             $progresPercent = round(($hariKe / $totalHariMagang) * 100);
         }
 

@@ -21,7 +21,7 @@ class TodayActivities extends Widget
         $isMahasiswa = $user->isMahasiswa();
 
         $query = Logbook::whereDate('tanggal', Carbon::today())
-            ->with('user')
+            ->with('user:id,name')
             ->orderBy('created_at', 'desc');
 
         if ($isMahasiswa) {

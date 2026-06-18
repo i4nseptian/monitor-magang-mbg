@@ -3,66 +3,75 @@
     'value',
     'icon' => null,
     'trend' => null,
+    'trendDirection' => null,
+    'trendLabel' => null,
     'color' => 'primary',
 ])
 
 @php
     $colorMap = [
         'primary' => [
-            'bg' => 'bg-indigo-50/60 dark:bg-indigo-950/30',
-            'border' => 'border-indigo-200/50 dark:border-indigo-900/40',
-            'text' => 'text-indigo-600 dark:text-indigo-400',
-            'hoverGlow' => 'hover:shadow-indigo-500/10 dark:hover:shadow-indigo-500/5',
-            'iconBg' => 'bg-indigo-100 dark:bg-indigo-950/50',
+            'iconBg' => 'bg-indigo-50 dark:bg-indigo-950/30',
+            'iconColor' => 'text-indigo-600 dark:text-indigo-400',
+            'valueText' => 'text-slate-900 dark:text-slate-100',
         ],
         'success' => [
-            'bg' => 'bg-emerald-50/60 dark:bg-emerald-950/30',
-            'border' => 'border-emerald-200/50 dark:border-emerald-900/40',
-            'text' => 'text-emerald-600 dark:text-emerald-400',
-            'hoverGlow' => 'hover:shadow-emerald-500/10 dark:hover:shadow-emerald-500/5',
-            'iconBg' => 'bg-emerald-100 dark:bg-emerald-950/50',
+            'iconBg' => 'bg-emerald-50 dark:bg-emerald-950/30',
+            'iconColor' => 'text-emerald-600 dark:text-emerald-400',
+            'valueText' => 'text-slate-900 dark:text-slate-100',
         ],
         'warning' => [
-            'bg' => 'bg-amber-50/60 dark:bg-amber-950/30',
-            'border' => 'border-amber-200/50 dark:border-amber-900/40',
-            'text' => 'text-amber-600 dark:text-amber-400',
-            'hoverGlow' => 'hover:shadow-amber-500/10 dark:hover:shadow-amber-500/5',
-            'iconBg' => 'bg-amber-100 dark:bg-amber-950/50',
+            'iconBg' => 'bg-amber-50 dark:bg-amber-950/30',
+            'iconColor' => 'text-amber-600 dark:text-amber-400',
+            'valueText' => 'text-slate-900 dark:text-slate-100',
         ],
         'danger' => [
-            'bg' => 'bg-rose-50/60 dark:bg-rose-950/30',
-            'border' => 'border-rose-200/50 dark:border-rose-900/40',
-            'text' => 'text-rose-600 dark:text-rose-400',
-            'hoverGlow' => 'hover:shadow-rose-500/10 dark:hover:shadow-rose-500/5',
-            'iconBg' => 'bg-rose-100 dark:bg-rose-950/50',
+            'iconBg' => 'bg-rose-50 dark:bg-rose-950/30',
+            'iconColor' => 'text-rose-600 dark:text-rose-400',
+            'valueText' => 'text-slate-900 dark:text-slate-100',
         ],
         'info' => [
-            'bg' => 'bg-cyan-50/60 dark:bg-cyan-950/30',
-            'border' => 'border-cyan-200/50 dark:border-cyan-900/40',
-            'text' => 'text-cyan-600 dark:text-cyan-400',
-            'hoverGlow' => 'hover:shadow-cyan-500/10 dark:hover:shadow-cyan-500/5',
-            'iconBg' => 'bg-cyan-100 dark:bg-cyan-950/50',
+            'iconBg' => 'bg-cyan-50 dark:bg-cyan-950/30',
+            'iconColor' => 'text-cyan-600 dark:text-cyan-400',
+            'valueText' => 'text-slate-900 dark:text-slate-100',
         ],
     ];
 
     $theme = $colorMap[$color] ?? $colorMap['primary'];
+
+    $trendColorClass = match ($trendDirection) {
+        'up' => 'text-emerald-600 dark:text-emerald-400',
+        'down' => 'text-rose-600 dark:text-rose-400',
+        default => 'text-slate-400 dark:text-slate-500',
+    };
 @endphp
 
-<div {{ $attributes->merge(['class' => 'group relative overflow-hidden rounded-xl border bg-white dark:bg-[#0d121c] p-4 sm:p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ' . $theme['border'] . ' ' . $theme['hoverGlow']]) }}>
+<div {{ $attributes->merge(['class' => 'group relative rounded-xl border border-[oklch(94%_0.004_286.32)] dark:border-[oklch(22%_0.01_260)] bg-white dark:bg-[#161920] p-4 shadow-[0_1px_2px_rgb(0_0_0/0.05)] transition-all hover:shadow-[0_4px_12px_-2px_rgb(0_0_0/0.08)]']) }}>
+
     <div class="flex items-center justify-between mb-3">
-        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">{{ $label }}</span>
+        <span class="text-xs font-medium text-slate-400 dark:text-slate-500">{{ $label }}</span>
         @if($icon)
-            <div class="flex h-7 w-7 items-center justify-center rounded-lg {{ $theme['iconBg'] }} {{ $theme['text'] }} transition-all duration-200 group-hover:scale-110">
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg {{ $theme['iconBg'] }} {{ $theme['iconColor'] }}">
                 {!! $icon !!}
             </div>
         @endif
     </div>
-    
-    <p class="text-xl sm:text-2xl font-bold tracking-tight tabular-nums text-gray-900 dark:text-white">{{ $value }}</p>
 
-    @if($trend)
-        <div class="flex items-center gap-1 text-[11px] font-medium text-gray-400 dark:text-gray-500 pt-2 mt-3 border-t border-gray-100 dark:border-gray-800">
-            {{ $trend }}
+    <p class="text-xl font-semibold tabular-nums {{ $theme['valueText'] }}">{{ $value }}</p>
+
+    @if($trend || $trendDirection || $trendLabel)
+        <div class="flex items-center gap-1.5 pt-2.5 mt-2.5 border-t border-slate-100 dark:border-slate-800">
+            @if($trendDirection === 'up')
+                <svg class="h-3 w-3 {{ $trendColorClass }}" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941"/></svg>
+            @elseif($trendDirection === 'down')
+                <svg class="h-3 w-3 {{ $trendColorClass }}" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 3.09M20.25 21v-5.25m0 0h-5.25m5.25 0-2.926 2.926"/></svg>
+            @endif
+            @if($trendLabel)
+                <span class="text-[11px] font-medium {{ $trendColorClass }}">{{ $trendLabel }}</span>
+            @endif
+            @if($trend)
+                <span class="text-[11px] text-slate-400 dark:text-slate-500">{{ $trend }}</span>
+            @endif
         </div>
     @endif
 </div>

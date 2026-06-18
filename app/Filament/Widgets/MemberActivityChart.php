@@ -21,12 +21,13 @@ class MemberActivityChart extends ChartWidget
 
     protected function getData(): array
     {
+        $mahasiswaList = User::role('mahasiswa')->get(['id', 'name']);
+        $mahasiswaIds = $mahasiswaList->pluck('id');
+
         $counts = Logbook::select('user_id', DB::raw('count(*) as total'))
-            ->whereIn('user_id', User::role('mahasiswa')->pluck('id'))
+            ->whereIn('user_id', $mahasiswaIds)
             ->groupBy('user_id')
             ->pluck('total', 'user_id');
-
-        $mahasiswaList = User::role('mahasiswa')->get(['id', 'name']);
 
         $labels = [];
         $data = [];

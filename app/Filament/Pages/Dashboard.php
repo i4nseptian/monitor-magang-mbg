@@ -17,6 +17,8 @@ class Dashboard extends BaseDashboard
 
     protected static ?int $navigationSort = -1;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public function getWidgets(): array
     {
         return [
@@ -45,13 +47,13 @@ class Dashboard extends BaseDashboard
         $tglSelesai = Carbon::parse($tglSelesaiStr);
         $now = Carbon::now();
 
-        $totalHari = $tglMulai->diffInDays($tglSelesai) + 1;
+        $totalHari = (int) $tglMulai->diffInDays($tglSelesai) + 1;
         if ($now->lt($tglMulai)) {
             $hariKe = 0;
         } elseif ($now->gt($tglSelesai)) {
             $hariKe = $totalHari;
         } else {
-            $hariKe = $tglMulai->diffInDays($now) + 1;
+            $hariKe = (int) $tglMulai->diffInDays($now) + 1;
         }
 
         $roleLabel = match (true) {
@@ -67,7 +69,7 @@ class Dashboard extends BaseDashboard
 
         if (!$user->isMahasiswa()) {
             // Mentor/Admin: ambil semua target dengan deadline
-            $upcomingTargets = Target::with('user')
+            $upcomingTargets = Target::with('user:id,name')
                 ->whereNotNull('target_date')
                 ->where('target_date', '>=', $now->toDateString())
                 ->where('progress', '<', 100)
@@ -82,7 +84,7 @@ class Dashboard extends BaseDashboard
                 'remaining_days' => $now->diffInDays($t->target_date, false) + 1,
             ]));
 
-            $upcomingProjects = Project::with('user')
+            $upcomingProjects = Project::with('user:id,name')
                 ->where('status_project', 'Sedang Dikerjakan')
                 ->orderBy('created_at')
                 ->limit(5)

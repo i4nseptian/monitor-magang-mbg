@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class InternshipSetting extends Model
 {
@@ -16,16 +17,18 @@ class InternshipSetting extends Model
     ];
 
     /**
-     * Get a setting value by key.
+     * Get a setting value by key (cached for 1 hour).
      */
     public static function getValue(string $key, mixed $default = null): mixed
     {
-        $setting = static::where('key', $key)->first();
-        return $setting ? $setting->value : $default;
+        return Cache::remember("internship_setting_{$key}", 3600, function () use ($key, $default) {
+            $setting = static::where('key', $key)->first();
+            return $setting ? $setting->value : $default;
+        });
     }
 
     /**
-     * Set a setting value by key.
+     * Set a setting value by key and clear the cache.
      */
     public static function setValue(string $key, mixed $value, ?string $description = null): void
     {
@@ -33,5 +36,6 @@ class InternshipSetting extends Model
             ['key' => $key],
             ['value' => $value, 'description' => $description]
         );
+        Cache::forget("internship_setting_{$key}");
     }
 }

@@ -28,16 +28,14 @@ class LogbookReminder extends Widget
                 ->whereDate('tanggal', Carbon::today())
                 ->exists();
         } else {
-            $todaySubmitters = Logbook::whereDate('tanggal', Carbon::today())
-                ->pluck('user_id')
+            $missingStudents = User::role('mahasiswa')
+                ->whereNotIn('id', function ($q) {
+                    $q->select('user_id')
+                        ->from('logbooks')
+                        ->whereDate('tanggal', Carbon::today());
+                })
+                ->pluck('name')
                 ->toArray();
-
-            $students = User::role('mahasiswa')->get();
-            foreach ($students as $student) {
-                if (!in_array($student->id, $todaySubmitters)) {
-                    $missingStudents[] = $student->name;
-                }
-            }
         }
 
         return [

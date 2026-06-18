@@ -8,55 +8,8 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc',
-                            400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca',
-                            800: '#3730a3', 900: '#312e81', 950: '#1e1b4b',
-                        },
-                        gray: {
-                            25: '#fcfcfd', 50: '#f9fafb', 100: '#f0f1f3', 200: '#dcdfe4',
-                            300: '#b9bec6', 400: '#8a94a6', 500: '#667085', 600: '#4b5565',
-                            700: '#364152', 800: '#202939', 900: '#121926', 950: '#0d121c',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'card': '0px 1px 2px rgba(16, 24, 40, 0.05)',
-                        'card-hover': '0px 4px 6px -2px rgba(16, 24, 40, 0.05), 0px 12px 16px -4px rgba(16, 24, 40, 0.1)',
-                        'badge': '0px 1px 2px rgba(16, 24, 40, 0.05)',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        .section-fade { opacity: 0; transform: translateY(24px); transition: all 0.7s ease-out; }
-        .section-fade.visible { opacity: 1; transform: translateY(0); }
-        .stat-number { font-variant-numeric: tabular-nums; }
-        .nav-blur { backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); }
-        .gradient-border { position: relative; }
-        .gradient-border::before {
-            content: '';
-            position: absolute; inset: 0; border-radius: inherit;
-            padding: 1px; background: linear-gradient(135deg, #6366f1, #06b6d4);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude;
-        }
-        .hover-lift { transition: all 0.2s ease; }
-        .hover-lift:hover { transform: translateY(-2px); box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.05), 0px 12px 16px -4px rgba(16, 24, 40, 0.1); }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white text-gray-900 font-sans">
 
@@ -64,7 +17,7 @@
     <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-gray-100" style="background: rgba(255,255,255,0.8);">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
             <a href="/" class="flex items-center gap-2.5">
-                <img src="{{ asset('images/logo-mark.svg') }}" alt="InternTrack" class="h-8 w-8">
+                <img src="{{ asset('images/logo-mark.svg') }}" alt="InternTrack" loading="lazy" class="h-8 w-8">
                 <div class="flex flex-col leading-tight">
                     <span class="text-lg font-bold text-gray-900 tracking-tight">InternTrack</span>
                     <span class="text-[10px] font-medium text-gray-400 tracking-wide">Diskominfo Makassar</span>
@@ -82,13 +35,6 @@
             </div>
         </div>
     </nav>
-
-    @php
-        $mahasiswaList = \App\Models\User::role('mahasiswa')->with('member')->get();
-        $totalMahasiswa = $mahasiswaList->count();
-        $totalLogbooksCount = \App\Models\Logbook::count();
-        $totalProjectsCount = \App\Models\Project::count();
-    @endphp
 
     <!-- Hero -->
     <section class="relative pt-24 pb-16 sm:pt-32 sm:pb-20 overflow-hidden">
@@ -304,7 +250,7 @@
                         <div class="text-center">
                             <div class="relative mx-auto mb-4 h-16 w-16">
                                 @if($foto && \Illuminate\Support\Facades\Storage::disk('public')->exists($foto))
-                                    <img src="{{ asset('storage/' . $foto) }}" alt="{{ $mhs->name }}" class="h-16 w-16 rounded-full object-cover ring-2 ring-gray-50">
+                                    <img src="{{ asset('storage/' . $foto) }}" alt="{{ $mhs->name }}" loading="lazy" class="h-16 w-16 rounded-full object-cover ring-2 ring-gray-50">
                                 @else
                                     <div class="flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-lg font-bold text-brand-600 ring-2 ring-gray-50">
                                         {{ $initials }}
@@ -366,7 +312,7 @@
     <footer class="border-t border-gray-100 bg-white py-12">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('images/logo-mark.svg') }}" alt="InternTrack" class="h-8 w-8">
+                <img src="{{ asset('images/logo-mark.svg') }}" alt="InternTrack" loading="lazy" class="h-8 w-8">
                 <div>
                     <p class="text-sm font-semibold text-gray-900">InternTrack</p>
                     <p class="text-xs text-gray-400">Dinas Komunikasi dan Informatika Kota Makassar</p>

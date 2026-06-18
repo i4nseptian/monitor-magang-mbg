@@ -38,10 +38,10 @@ class Timeline extends Page
 
         $tglMulai = Carbon::parse(InternshipSetting::getValue('tanggal_mulai', '2026-06-08'));
         $tglSelesai = Carbon::parse(InternshipSetting::getValue('tanggal_selesai', '2026-08-28'));
-        $totalDays = max(1, $tglMulai->diffInDays($tglSelesai) + 1);
+        $totalDays = max(1, (int) $tglMulai->diffInDays($tglSelesai) + 1);
 
         $now = Carbon::now();
-        $daysElapsed = min($totalDays, max(0, $tglMulai->diffInDays($now) + 1));
+        $daysElapsed = min($totalDays, max(0, (int) $tglMulai->diffInDays($now) + 1));
         $progressPercent = round(($daysElapsed / $totalDays) * 100);
 
         // Ambil data logbook diurutkan berdasarkan tanggal terbaru

@@ -23,7 +23,7 @@ class TimelineProgress extends Widget
         $tglSelesai = Carbon::parse($tglSelesaiStr);
         $tglSekarang = Carbon::now();
 
-        $totalHari = $tglMulai->diffInDays($tglSelesai) + 1;
+        $totalHari = (int) $tglMulai->diffInDays($tglSelesai) + 1;
 
         if ($tglSekarang->lt($tglMulai)) {
             $hariBerjalan = 0;
@@ -34,7 +34,7 @@ class TimelineProgress extends Widget
             $hariTersisa = 0;
             $persen = 100;
         } else {
-            $hariBerjalan = $tglMulai->diffInDays($tglSekarang) + 1;
+            $hariBerjalan = (int) $tglMulai->diffInDays($tglSekarang) + 1;
             $hariTersisa = $totalHari - $hariBerjalan;
             $persen = round(($hariBerjalan / $totalHari) * 100);
         }
