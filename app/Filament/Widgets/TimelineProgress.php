@@ -12,7 +12,10 @@ class TimelineProgress extends Widget
 
     protected static ?int $sort = 2;
 
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = [
+        'default' => 'full',
+        'lg' => 7,
+    ];
 
     protected function getViewData(): array
     {

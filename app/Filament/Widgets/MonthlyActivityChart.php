@@ -12,7 +12,7 @@ class MonthlyActivityChart extends ChartWidget
 {
     protected static ?string $heading = 'Aktivitas Bulanan (Logbook)';
 
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 6;
 
     protected int | string | array $columnSpan = [
         'default' => 'full',

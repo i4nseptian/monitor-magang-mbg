@@ -11,7 +11,7 @@ class MemberActivityChart extends ChartWidget
 {
     protected static ?string $heading = 'Aktivitas Anggota (Perbandingan Kegiatan)';
 
-    protected static ?int $sort = 5;
+    protected static ?int $sort = 7;
 
     protected int | string | array $columnSpan = [
         'default' => 'full',

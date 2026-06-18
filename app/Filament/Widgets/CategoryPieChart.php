@@ -11,7 +11,7 @@ class CategoryPieChart extends ChartWidget
 {
     protected static ?string $heading = 'Kategori Kegiatan (Distribusi)';
 
-    protected static ?int $sort = 6;
+    protected static ?int $sort = 5;
 
     protected int | string | array $columnSpan = [
         'default' => 'full',

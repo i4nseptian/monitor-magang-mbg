@@ -11,7 +11,7 @@ class TodayActivities extends Widget
 {
     protected static string $view = 'filament.widgets.today-activities';
 
-    protected static ?int $sort = 7;
+    protected static ?int $sort = 8;
 
     protected int | string | array $columnSpan = 'full';
 

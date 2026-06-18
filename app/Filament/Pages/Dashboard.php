@@ -22,13 +22,13 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
-            \App\Filament\Widgets\LogbookReminder::class,
             \App\Filament\Widgets\StatsOverview::class,
             \App\Filament\Widgets\TimelineProgress::class,
+            \App\Filament\Widgets\LogbookReminder::class,
             \App\Filament\Widgets\WeeklyActivityChart::class,
+            \App\Filament\Widgets\CategoryPieChart::class,
             \App\Filament\Widgets\MonthlyActivityChart::class,
             \App\Filament\Widgets\MemberActivityChart::class,
-            \App\Filament\Widgets\CategoryPieChart::class,
             \App\Filament\Widgets\TodayActivities::class,
         ];
     }

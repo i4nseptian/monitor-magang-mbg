@@ -12,7 +12,7 @@ class WeeklyActivityChart extends ChartWidget
 {
     protected static ?string $heading = 'Aktivitas Mingguan (Logbook)';
 
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 4;
 
     protected int | string | array $columnSpan = [
         'default' => 'full',

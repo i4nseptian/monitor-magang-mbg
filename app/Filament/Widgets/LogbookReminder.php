@@ -12,9 +12,12 @@ class LogbookReminder extends Widget
 {
     protected static string $view = 'filament.widgets.logbook-reminder';
 
-    protected static ?int $sort = 0;
+    protected static ?int $sort = 3;
 
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = [
+        'default' => 'full',
+        'lg' => 5,
+    ];
 
     protected function getViewData(): array
     {
