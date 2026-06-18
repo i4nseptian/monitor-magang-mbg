@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Logbook;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryPieChart extends ChartWidget
@@ -23,48 +24,51 @@ class CategoryPieChart extends ChartWidget
     {
         $user = Auth::user();
         $isMahasiswa = $user->isMahasiswa();
+        $cacheKey = 'chart_category_' . ($isMahasiswa ? 'user_' . $user->id : 'admin');
 
-        $query = Logbook::query();
-        if ($isMahasiswa) {
-            $query->where('user_id', $user->id);
-        }
+        return Cache::remember($cacheKey, 300, function () use ($isMahasiswa, $user) {
+            $query = Logbook::query();
+            if ($isMahasiswa) {
+                $query->where('user_id', $user->id);
+            }
 
-        $activities = $query->select('kategori_kegiatan', DB::raw('count(*) as count'))
-            ->groupBy('kategori_kegiatan')
-            ->get();
+            $activities = $query->select('kategori_kegiatan', DB::raw('count(*) as count'))
+                ->groupBy('kategori_kegiatan')
+                ->get();
 
-        $labels = [];
-        $data = [];
+            $labels = [];
+            $data = [];
 
-        foreach ($activities as $activity) {
-            $labels[] = $activity->kategori_kegiatan;
-            $data[] = $activity->count;
-        }
+            foreach ($activities as $activity) {
+                $labels[] = $activity->kategori_kegiatan;
+                $data[] = $activity->count;
+            }
 
-        if (empty($data)) {
-            $labels = ['Belum ada data'];
-            $data = [0];
-        }
+            if (empty($data)) {
+                $labels = ['Belum ada data'];
+                $data = [0];
+            }
 
-        return [
-            'datasets' => [
-                [
-                    'data' => $data,
-                    'backgroundColor' => [
-                        '#3b82f6', // Pengelolaan Media Sosial - Blue
-                        '#10b981', // Publikasi Informasi Digital - Emerald
-                        '#f59e0b', // Pengolahan Data - Amber
-                        '#8b5cf6', // Desain Konten Digital - Violet
-                        '#ec4899', // Dokumentasi Kegiatan - Pink
-                        '#f43f5e', // Peliputan Lapangan - Rose
-                        '#06b6d4', // Strategi Komunikasi Digital - Cyan
-                        '#14b8a6', // Penyusunan Laporan - Teal
-                        '#6b7280', // Lainnya - Gray
+            return [
+                'datasets' => [
+                    [
+                        'data' => $data,
+                        'backgroundColor' => [
+                            '#3b82f6',
+                            '#10b981',
+                            '#f59e0b',
+                            '#8b5cf6',
+                            '#ec4899',
+                            '#f43f5e',
+                            '#06b6d4',
+                            '#14b8a6',
+                            '#6b7280',
+                        ],
                     ],
                 ],
-            ],
-            'labels' => $labels,
-        ];
+                'labels' => $labels,
+            ];
+        });
     }
 
     protected function getType(): string
