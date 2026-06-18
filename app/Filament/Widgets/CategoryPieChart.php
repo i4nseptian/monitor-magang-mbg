@@ -16,7 +16,7 @@ class CategoryPieChart extends ChartWidget
     protected int | string | array $columnSpan = [
         'default' => 'full',
         'md' => 6,
-        'lg' => 4,
+        'lg' => 3,
     ];
 
     protected function getData(): array
