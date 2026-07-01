@@ -478,3 +478,19 @@ html.theme-transition *::before,
 html.theme-transition *::after {
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
 }
+
+/* ── Dark mode: fallback untuk elemen Filament yg mungkin kelewatan dark variant ── */
+.dark .fi-main-ctn .fi-ta-ctn th,
+.dark .fi-main-ctn .fi-ta-ctn td {
+    color: #e2e8f0;
+}
+.dark .fi-main-ctn .fi-section-header-heading,
+.dark .fi-main-ctn .fi-header-heading {
+    color: #f1f5f9;
+}
+.dark .fi-main-ctn .fi-dropdown-list-item {
+    color: #e2e8f0;
+}
+.dark .fi-main-ctn label {
+    color: #cbd5e1;
+}

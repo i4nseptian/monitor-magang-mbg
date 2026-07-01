@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->key($request->user()?->id ?: $request->ip());
+            return Limit::perMinute(60)->key($request->user()?->id ?: $request->id());
         });
 
         \Illuminate\Support\Facades\Event::listen(
@@ -35,5 +35,6 @@ class AppServiceProvider extends ServiceProvider
                 ]);
             }
         );
+
     }
 }

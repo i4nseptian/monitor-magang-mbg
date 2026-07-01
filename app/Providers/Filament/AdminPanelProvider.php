@@ -60,6 +60,18 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 'throttle:60,1',
             ])
+            ->renderHook(
+                'panels::body.start',
+                fn () => \Illuminate\Support\Facades\Blade::render(<<<'HTML'
+<script>
+    document.addEventListener('theme-changed', () => {
+        document.documentElement.classList.add('theme-transition');
+        setTimeout(() => document.documentElement.classList.remove('theme-transition'), 300);
+    });
+</script>
+HTML
+                ),
+            )
             ->plugins([
                 FilamentShieldPlugin::make(),
             ])
