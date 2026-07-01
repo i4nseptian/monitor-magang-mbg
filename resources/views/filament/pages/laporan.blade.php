@@ -23,7 +23,7 @@
                             Mencakup lembar cover resmi, profil instansi Diskominfo, timeline progres, rekapitulasi seluruh logbook kegiatan, foto-foto dokumentasi, grafik performa, lembar evaluasi mentor, serta kesimpulan akhir.
                         </p>
                     </div>
-                    <x-filament::button wire:click="mountAction('generate_laporan_akhir')" icon="heroicon-o-arrow-down-tray" size="lg" class="shadow-md hover:shadow-lg hover:scale-[1.02] transition-all shrink-0">
+                    <x-filament::button wire:click="generateLaporanAkhir" icon="heroicon-o-arrow-down-tray" size="lg" class="shadow-md hover:shadow-lg hover:scale-[1.02] transition-all shrink-0">
                         Unduh Laporan Akhir
                     </x-filament::button>
                 </div>
@@ -48,7 +48,7 @@
             </x-slot>
             
             <div class="grid grid-cols-1 gap-5 md:grid-cols-4 mt-4">
-                <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-50/50 to-white dark:from-slate-950/30 dark:to-gray-900/50 p-4">
+                <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-50/50 to-white dark:from-slate-950/30 dark:to-gray-900/50 p-3 sm:p-4">
                     <label class="mb-2 block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Jenis Laporan</label>
                     <select wire:model.live="jenis_laporan"
                         class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-slate-800 dark:text-white shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
@@ -58,18 +58,18 @@
                         <option value="akhir">Laporan Akhir Magang</option>
                     </select>
                 </div>
-                <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-50/50 to-white dark:from-slate-950/30 dark:to-gray-900/50 p-4">
+                <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-50/50 to-white dark:from-slate-950/30 dark:to-gray-900/50 p-3 sm:p-4">
                     <label class="mb-2 block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Dari Tanggal</label>
                     <input type="date" wire:model.live="tanggal_dari"
                         class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-slate-800 dark:text-white shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:[color-scheme:dark]">
                 </div>
-                <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-50/50 to-white dark:from-slate-950/30 dark:to-gray-900/50 p-4">
+                <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-50/50 to-white dark:from-slate-950/30 dark:to-gray-900/50 p-3 sm:p-4">
                     <label class="mb-2 block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Hingga Tanggal</label>
                     <input type="date" wire:model.live="tanggal_hingga"
                         class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-slate-800 dark:text-white shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:[color-scheme:dark]">
                 </div>
                 @if(!auth()->user()->isMahasiswa())
-                <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-50/50 to-white dark:from-slate-950/30 dark:to-gray-900/50 p-4">
+                <div class="rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-50/50 to-white dark:from-slate-950/30 dark:to-gray-900/50 p-3 sm:p-4">
                     <label class="mb-2 block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Filter Mahasiswa</label>
                     <select wire:model.live="user_id"
                         class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-slate-800 dark:text-white shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
@@ -92,13 +92,33 @@
                     <span class="text-sm font-bold text-slate-800 dark:text-slate-200">Preview Data Terpilih</span>
                 </div>
             </x-slot>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 mt-4">
+            <div class="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-6 mt-4">
                 <x-stat-card label="Logbook" :value="$stats['totalLogbook']" color="primary" />
                 <x-stat-card label="Dokumentasi" :value="$stats['totalDokumentasi']" color="warning" />
                 <x-stat-card label="Catatan Mentor" :value="$stats['totalCatatanMentor']" color="info" />
                 <x-stat-card label="Skill" :value="$stats['totalSkill']" color="success" />
                 <x-stat-card label="Project" :value="$stats['totalProject']" color="danger" />
                 <x-stat-card label="Kehadiran" :value="$stats['totalAttendance']" color="primary" />
+            </div>
+        </x-filament::section>
+
+        <x-filament::section>
+            <x-slot name="heading">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-rose-600 text-white shadow-md">
+                        <x-filament::icon icon="heroicon-o-arrow-down-tray" class="h-5 w-5" />
+                    </div>
+                    <span class="text-sm font-bold text-slate-800 dark:text-slate-200">Export Data</span>
+                </div>
+            </x-slot>
+            <x-slot name="description">Unduh data sesuai konfigurasi di atas dalam format yang diinginkan.</x-slot>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+                <x-filament::button wire:click="exportPdf" icon="heroicon-o-document-arrow-down" color="danger" tag="button">
+                    Export PDF
+                </x-filament::button>
+                <x-filament::button wire:click="exportExcel" icon="heroicon-o-table-cells" color="success" tag="button">
+                    Export Excel
+                </x-filament::button>
             </div>
         </x-filament::section>
 

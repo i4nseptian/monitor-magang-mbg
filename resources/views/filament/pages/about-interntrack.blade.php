@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     <div class="mx-auto max-w-4xl space-y-6">
 
-        <div class="rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-gradient-to-b from-white via-slate-50/30 to-white dark:from-gray-900 dark:to-gray-950/50 p-8 text-center shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-gradient-to-b from-white via-slate-50/30 to-white dark:from-gray-900 dark:to-gray-950/50 p-5 sm:p-6 lg:p-8 text-center shadow-sm hover:shadow-md transition-all duration-300">
             <div class="relative mx-auto h-16 w-16 p-1 rounded-2xl bg-white dark:bg-gray-800 shadow-lg transition-transform duration-300 hover:scale-105">
                 <img src="{{ asset('images/logo-mark.svg') }}" alt="InternTrack" class="h-full w-full">
             </div>
@@ -78,7 +78,7 @@
         </x-filament::section>
 
         <p class="pb-6 text-center text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-            InternTrack v1.2 · Dinas Komunikasi dan Informatika Kota Makassar
+            InternTrack v{{ config('intern.version', '1.0') }} · Dinas Komunikasi dan Informatika Kota Makassar
         </p>
 
     </div>

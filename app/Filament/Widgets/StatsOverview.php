@@ -3,9 +3,9 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Documentation;
-use App\Models\InternshipSetting;
 use App\Models\Logbook;
 use App\Models\Member;
+use App\Helpers\InternshipHelper;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Carbon;
@@ -22,7 +22,7 @@ class StatsOverview extends BaseWidget
 
     protected function getColumns(): int
     {
-        return 3;
+        return 4;
     }
 
     protected function getStats(): array
@@ -31,26 +31,11 @@ class StatsOverview extends BaseWidget
         $isMahasiswa = $user->isMahasiswa();
         $cacheKey = 'stats_overview_' . ($isMahasiswa ? 'user_' . $user->id : 'admin');
 
-        return Cache::remember($cacheKey, 300, function () use ($isMahasiswa, $user) {
-            $tglMulaiStr = InternshipSetting::getValue('tanggal_mulai', '2026-06-08');
-            $tglSelesaiStr = InternshipSetting::getValue('tanggal_selesai', '2026-08-28');
-
-            $tglMulai = Carbon::parse($tglMulaiStr);
-            $tglSelesai = Carbon::parse($tglSelesaiStr);
-            $tglSekarang = Carbon::now();
-
-            $totalHariMagang = (int) $tglMulai->diffInDays($tglSelesai) + 1;
-
-            if ($tglSekarang->lt($tglMulai)) {
-                $hariKe = 0;
-                $progresPercent = 0;
-            } elseif ($tglSekarang->gt($tglSelesai)) {
-                $hariKe = $totalHariMagang;
-                $progresPercent = 100;
-            } else {
-                $hariKe = (int) $tglMulai->diffInDays($tglSekarang) + 1;
-                $progresPercent = round(($hariKe / $totalHariMagang) * 100);
-            }
+        return Cache::remember($cacheKey, 3600, function () use ($isMahasiswa, $user) {
+            $progress = InternshipHelper::getProgress();
+            $hariKe = $progress['hariKe'];
+            $totalHariMagang = $progress['totalHari'];
+            $progresPercent = $progress['persen'];
 
             $totalKegiatan = Logbook::when($isMahasiswa, fn($q) => $q->where('user_id', $user->id))->count();
             $totalDokumentasi = Documentation::when($isMahasiswa, fn($q) => $q->where('user_id', $user->id))->count();

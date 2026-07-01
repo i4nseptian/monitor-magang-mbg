@@ -46,12 +46,12 @@
     };
 @endphp
 
-<div {{ $attributes->merge(['class' => 'group relative rounded-xl border border-[oklch(94%_0.004_286.32)] dark:border-[oklch(22%_0.01_260)] bg-white dark:bg-[#161920] p-4 shadow-[0_1px_2px_rgb(0_0_0/0.05)] transition-all hover:shadow-[0_4px_12px_-2px_rgb(0_0_0/0.08)]']) }}>
+<div {{ $attributes->merge(['class' => 'group relative rounded-xl border border-[oklch(94%_0.004_286.32)] dark:border-[oklch(22%_0.01_260)] bg-white dark:bg-[#161920] p-3 sm:p-4 shadow-[0_1px_2px_rgb(0_0_0/0.05)] transition-all hover:shadow-[0_4px_12px_-2px_rgb(0_0_0/0.08)]']) }}>
 
     <div class="flex items-center justify-between mb-3">
         <span class="text-xs font-medium text-slate-400 dark:text-slate-500">{{ $label }}</span>
         @if($icon)
-            <div class="flex h-8 w-8 items-center justify-center rounded-lg {{ $theme['iconBg'] }} {{ $theme['iconColor'] }}">
+            <div class="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg {{ $theme['iconBg'] }} {{ $theme['iconColor'] }}">
                 {!! $icon !!}
             </div>
         @endif

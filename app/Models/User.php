@@ -122,6 +122,17 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Target::class);
     }
 
+    // ─── Scopes ──────────────────────────────────────────────
+
+    public function scopeMahasiswa($query)
+    {
+        try {
+            return $query->role('mahasiswa');
+        } catch (\Spatie\Permission\Exceptions\RoleDoesNotExist) {
+            return $query->whereRaw('1 = 0');
+        }
+    }
+
     // ─── Helpers ─────────────────────────────────────────────
 
     public function isMahasiswa(): bool

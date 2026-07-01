@@ -1,6 +1,6 @@
 <x-filament-panels::page>
     <div class="space-y-6">
-        <form wire:submit.prevent="save">
+        <form wire:submit.prevent="save" x-data="{ loading: false }" x-on:submit="loading = true">
             <x-filament::section>
                 <x-slot name="heading">
                     <div class="flex items-center gap-2">
@@ -13,26 +13,33 @@
                 <div class="mt-4 grid grid-cols-1 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama Instansi</label>
-                        <input type="text" wire:model="nama_instansi"
+                        <input type="text" wire:model="nama_instansi" required
                             class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/10 transition shadow-sm">
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tanggal Mulai Magang</label>
-                            <input type="date" wire:model="tanggal_mulai"
+                            <input type="date" wire:model="tanggal_mulai" required
                                 class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/10 transition shadow-sm dark:[color-scheme:dark]">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tanggal Selesai Magang</label>
-                            <input type="date" wire:model="tanggal_selesai"
+                            <input type="date" wire:model="tanggal_selesai" required
                                 class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/10 transition shadow-sm dark:[color-scheme:dark]">
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-6 flex justify-end border-t border-gray-100 dark:border-gray-800 pt-4">
-                    <x-filament::button type="submit" icon="heroicon-o-check">
-                        Simpan Perubahan
+                    <x-filament::button type="submit" icon="heroicon-o-check" x-bind:disabled="loading">
+                        <span x-show="!loading">Simpan Perubahan</span>
+                        <span x-show="loading" class="flex items-center gap-2">
+                            <svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                            </svg>
+                            Menyimpan...
+                        </span>
                     </x-filament::button>
                 </div>
             </x-filament::section>
@@ -46,17 +53,17 @@
                 </div>
             </x-slot>
             <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
-                <div class="flex gap-3 items-start">
-                    <span class="shrink-0 rounded-md bg-gray-50 dark:bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700">Nama Instansi</span>
-                    <span>— dicetak pada kop laporan PDF.</span>
+                <div class="flex flex-col sm:flex-row gap-1.5 sm:gap-3 sm:items-start">
+                    <span class="shrink-0 rounded-md bg-gray-50 dark:bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 w-fit">Nama Instansi</span>
+                    <span class="text-sm sm:text-base">— dicetak pada kop laporan PDF.</span>
                 </div>
-                <div class="flex gap-3 items-start">
-                    <span class="shrink-0 rounded-md bg-gray-50 dark:bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700">Periode Magang</span>
-                    <span>— menentukan kalkulasi hari ke- dan progress bar dashboard.</span>
+                <div class="flex flex-col sm:flex-row gap-1.5 sm:gap-3 sm:items-start">
+                    <span class="shrink-0 rounded-md bg-gray-50 dark:bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 w-fit">Periode Magang</span>
+                    <span class="text-sm sm:text-base">— menentukan kalkulasi hari ke- dan progress bar dashboard.</span>
                 </div>
-                <div class="flex gap-3 items-start">
-                    <span class="shrink-0 rounded-md bg-gray-50 dark:bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700">Simpan</span>
-                    <span>— pastikan tanggal sudah benar sebelum menyimpan.</span>
+                <div class="flex flex-col sm:flex-row gap-1.5 sm:gap-3 sm:items-start">
+                    <span class="shrink-0 rounded-md bg-gray-50 dark:bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 w-fit">Simpan</span>
+                    <span class="text-sm sm:text-base">— pastikan tanggal sudah benar sebelum menyimpan.</span>
                 </div>
             </div>
         </x-filament::section>

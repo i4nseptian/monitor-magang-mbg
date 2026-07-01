@@ -28,7 +28,7 @@
 
         {{-- Progress bar — Metronic clean bar --}}
         <div class="mt-5">
-            <div class="mb-2 flex items-center justify-between text-sm">
+            <div class="mb-2 flex items-center justify-between gap-1 text-xs sm:text-sm">
                 <span class="font-medium text-slate-600 dark:text-slate-400 tabular-nums">{{ $hari_berjalan }} hari berjalan</span>
                 <span class="font-semibold text-indigo-600 dark:text-indigo-400 tabular-nums">{{ $persentase }}%</span>
                 <span class="font-medium text-slate-400 dark:text-slate-500 tabular-nums">{{ $hari_tersisa }} hari tersisa</span>
@@ -41,17 +41,17 @@
         </div>
 
         {{-- Stat boxes — Metronic clean grid --}}
-        <div class="mt-5 grid grid-cols-3 gap-3">
-            <div class="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 p-3 text-center">
-                <p class="text-lg font-semibold tabular-nums text-slate-800 dark:text-slate-200">{{ $total_hari }}</p>
+        <div class="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
+            <div class="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 p-2 sm:p-3 text-center">
+                <p class="text-base sm:text-lg font-semibold tabular-nums text-slate-800 dark:text-slate-200">{{ $total_hari }}</p>
                 <p class="mt-0.5 text-xs font-medium text-slate-400 dark:text-slate-500">Total Hari</p>
             </div>
-            <div class="rounded-lg border border-indigo-100 dark:border-indigo-900/40 bg-indigo-50/50 dark:bg-indigo-950/20 p-3 text-center">
-                <p class="text-lg font-semibold tabular-nums text-indigo-600 dark:text-indigo-400">{{ $hari_berjalan }}</p>
+            <div class="rounded-lg border border-indigo-100 dark:border-indigo-900/40 bg-indigo-50/50 dark:bg-indigo-950/20 p-2 sm:p-3 text-center">
+                <p class="text-base sm:text-lg font-semibold tabular-nums text-indigo-600 dark:text-indigo-400">{{ $hari_berjalan }}</p>
                 <p class="mt-0.5 text-xs font-medium text-indigo-500/70 dark:text-indigo-400/70">Sudah Dilalui</p>
             </div>
-            <div class="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 p-3 text-center">
-                <p class="text-lg font-semibold tabular-nums text-slate-600 dark:text-slate-300">{{ $hari_tersisa }}</p>
+            <div class="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 p-2 sm:p-3 text-center">
+                <p class="text-base sm:text-lg font-semibold tabular-nums text-slate-600 dark:text-slate-300">{{ $hari_tersisa }}</p>
                 <p class="mt-0.5 text-xs font-medium text-slate-400 dark:text-slate-500">Sisa Hari</p>
             </div>
         </div>

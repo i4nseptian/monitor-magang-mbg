@@ -40,7 +40,7 @@ class ReportService
             ->orderBy('tanggal')
             ->get();
 
-        $members = User::role('mahasiswa')->with('member')->get();
+        $members = User::mahasiswa()->with('member')->get();
 
         $mentorNotes = MentorNote::with(['mahasiswa', 'mentor'])
             ->when($userId, fn ($q) => $q->where('user_id', $userId))
@@ -49,8 +49,8 @@ class ReportService
             ->get();
 
         // Timeline info
-        $tglMulai = Carbon::parse(InternshipSetting::getValue('tanggal_mulai', '2026-06-08'));
-        $tglSelesai = Carbon::parse(InternshipSetting::getValue('tanggal_selesai', '2026-08-28'));
+        $tglMulai = Carbon::parse(InternshipSetting::getValue('tanggal_mulai', config('intern.default_tanggal_mulai')));
+        $tglSelesai = Carbon::parse(InternshipSetting::getValue('tanggal_selesai', config('intern.default_tanggal_selesai')));
         $totalHari = (int) $tglMulai->diffInDays($tglSelesai) + 1;
         $hariBerjalan = min((int) $tglMulai->diffInDays(Carbon::now()) + 1, $totalHari);
         $persentase = round(($hariBerjalan / $totalHari) * 100);
@@ -190,8 +190,8 @@ class ReportService
      */
     public function getFinalStats(?int $userId = null): array
     {
-        $tglMulai = Carbon::parse(InternshipSetting::getValue('tanggal_mulai', '2026-06-08'));
-        $tglSelesai = Carbon::parse(InternshipSetting::getValue('tanggal_selesai', '2026-08-28'));
+        $tglMulai = Carbon::parse(InternshipSetting::getValue('tanggal_mulai', config('intern.default_tanggal_mulai')));
+        $tglSelesai = Carbon::parse(InternshipSetting::getValue('tanggal_selesai', config('intern.default_tanggal_selesai')));
         $totalHari = (int) $tglMulai->diffInDays($tglSelesai) + 1;
 
         $base = $userId ? [['user_id', '=', $userId]] : [];

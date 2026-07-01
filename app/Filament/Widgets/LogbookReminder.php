@@ -31,7 +31,7 @@ class LogbookReminder extends Widget
                 ->whereDate('tanggal', Carbon::today())
                 ->exists();
         } else {
-            $missingStudents = User::role('mahasiswa')
+            $missingStudents = User::mahasiswa()
                 ->whereNotIn('id', function ($q) {
                     $q->select('user_id')
                         ->from('logbooks')

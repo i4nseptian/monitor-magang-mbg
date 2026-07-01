@@ -36,24 +36,41 @@
                     </div>
                 </div>
 
-                @if(!auth()->user()->isMahasiswa())
-                    <div class="border-t border-slate-100 dark:border-slate-800 pt-5 md:border-l md:border-t-0 md:pl-6 md:pt-0">
-                        <label class="mb-2 block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Filter Mahasiswa</label>
-                        <select wire:model.live="selectedUserId"
+                <div class="border-t border-slate-100 dark:border-slate-800 pt-5 md:border-l md:border-t-0 md:pl-6 md:pt-0 space-y-3">
+                    @if(!auth()->user()->isMahasiswa())
+                        <div>
+                            <label class="mb-1.5 block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Filter Mahasiswa</label>
+                            <select wire:model.live="selectedUserId"
+                                class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-slate-800 dark:text-white shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
+                                <option value="">Semua Mahasiswa</option>
+                                @foreach($mahasiswaList as $mhs)
+                                    <option value="{{ $mhs->id }}">{{ $mhs->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+                    <div>
+                        <label class="mb-1.5 block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Filter Kategori</label>
+                        <select wire:model.live="kategoriFilter"
                             class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-slate-800 dark:text-white shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
-                            <option value="">Semua Mahasiswa</option>
-                            @foreach($mahasiswaList as $mhs)
-                                <option value="{{ $mhs->id }}">{{ $mhs->name }}</option>
+                            <option value="">Semua Kategori</option>
+                            @foreach($kategoriList as $kategori)
+                                <option value="{{ $kategori }}">{{ $kategori }}</option>
                             @endforeach
                         </select>
                     </div>
-                @endif
+                    <div>
+                        <label class="mb-1.5 block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Cari Kegiatan</label>
+                        <input type="text" wire:model.live.debounce.300ms="searchQuery" placeholder="Cari judul kegiatan..."
+                            class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="relative ml-5 space-y-6 border-l-2 border-slate-200 dark:border-slate-700 pb-8 md:ml-6">
+        <div class="relative ml-3 sm:ml-5 space-y-6 border-l-2 border-slate-200 dark:border-slate-700 pb-8 md:ml-6">
             @if($timelineEvents->isEmpty())
-                <div class="flex flex-col items-center justify-center py-16 pl-8 text-center md:pl-10">
+                <div class="flex flex-col items-center justify-center py-16 pl-6 text-center sm:pl-8 md:pl-10">
                     <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 shadow-sm">
                         <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -64,7 +81,7 @@
                 </div>
             @else
                 @foreach($timelineEvents as $event)
-                    <div class="relative pl-8 md:pl-10 group">
+                    <div class="relative pl-6 sm:pl-8 md:pl-10 group" style="animation: fadeInUp 0.4s ease-out {{ $loop->index * 0.05 }}s both;">
                         
                         <span class="absolute -left-[9px] top-5 h-4 w-4 rounded-full border-4 border-white dark:border-gray-900 bg-brand-600 dark:bg-brand-500 shadow-sm ring-4 ring-brand-50 dark:ring-brand-950/40 transition-transform duration-300 group-hover:scale-125"></span>
 
@@ -131,7 +148,7 @@
                     </div>
                 @endforeach
 
-                <div class="flex justify-center pl-8 pt-6 md:pl-10">
+                <div class="flex justify-center pl-6 pt-6 sm:pl-8 md:pl-10">
                     <div class="[&_.pagination]:gap-1">
                         {{ $timelineEvents->links() }}
                     </div>

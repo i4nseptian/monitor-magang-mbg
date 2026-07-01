@@ -27,17 +27,20 @@ class MonthlyActivityChart extends ChartWidget
         $isMahasiswa = $user->isMahasiswa();
         $cacheKey = 'chart_monthly_' . ($isMahasiswa ? 'user_' . $user->id : 'admin');
 
-        return Cache::remember($cacheKey, 300, function () use ($isMahasiswa, $user) {
+        return Cache::remember($cacheKey, 3600, function () use ($isMahasiswa, $user) {
             $query = Logbook::query();
             if ($isMahasiswa) {
                 $query->where('user_id', $user->id);
             }
 
+            $driver = DB::getDriverName();
+            $monthExpr = $driver === 'sqlite' ? "CAST(strftime('%m', tanggal) AS INTEGER)" : 'MONTH(tanggal)';
+
             $activities = $query->select(
-                DB::raw('MONTH(tanggal) as month_num'),
+                DB::raw("{$monthExpr} as month_num"),
                 DB::raw('count(*) as count')
             )
-            ->groupBy(DB::raw('MONTH(tanggal)'))
+            ->groupBy(DB::raw($monthExpr))
             ->orderBy('month_num', 'asc')
             ->get();
 

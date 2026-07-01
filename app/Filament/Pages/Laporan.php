@@ -10,7 +10,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Pages\Page;
-use Filament\Actions\Action;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,43 +42,22 @@ class Laporan extends Page
         }
     }
 
-    protected function getHeaderActions(): array
+    public function generateLaporanAkhir(): mixed
     {
-        return [
-            Action::make('generate_laporan_akhir')
-                ->label('Generate Laporan Akhir')
-                ->icon('heroicon-o-document-text')
-                ->color('primary')
-                ->action(function () {
-                    $this->jenis_laporan = 'akhir';
-                    $this->tanggal_dari = Carbon::parse(\App\Models\InternshipSetting::getValue('tanggal_mulai', '2026-06-08'))->toDateString();
-                    $this->tanggal_hingga = Carbon::parse(\App\Models\InternshipSetting::getValue('tanggal_selesai', '2026-08-28'))->toDateString();
-                    $this->exportPdf();
-                }),
-
-            Action::make('export_pdf')
-                ->label('Export PDF')
-                ->icon('heroicon-o-document-arrow-down')
-                ->color('danger')
-                ->action('exportPdf'),
-
-            Action::make('export_excel')
-                ->label('Export Excel')
-                ->icon('heroicon-o-table-cells')
-                ->color('success')
-                ->action('exportExcel'),
-        ];
+        $this->jenis_laporan = 'akhir';
+        $this->tanggal_dari = Carbon::parse(\App\Models\InternshipSetting::getValue('tanggal_mulai', config('intern.default_tanggal_mulai')))->toDateString();
+        $this->tanggal_hingga = Carbon::parse(\App\Models\InternshipSetting::getValue('tanggal_selesai', config('intern.default_tanggal_selesai')))->toDateString();
+        return $this->exportPdf();
     }
 
     public function exportPdf(): \Symfony\Component\HttpFoundation\StreamedResponse
     {
         $reportService = new ReportService();
 
-        // If generating final report, use full date range
         if ($this->jenis_laporan === 'akhir') {
             $settings = \App\Models\InternshipSetting::all()->keyBy('key');
-            $this->tanggal_dari = $settings->get('tanggal_mulai')?->value ?? '2026-06-08';
-            $this->tanggal_hingga = $settings->get('tanggal_selesai')?->value ?? '2026-08-28';
+            $this->tanggal_dari = $settings->get('tanggal_mulai')?->value ?? config('intern.default_tanggal_mulai');
+            $this->tanggal_hingga = $settings->get('tanggal_selesai')?->value ?? config('intern.default_tanggal_selesai');
         }
 
         $data = $reportService->getData($this->jenis_laporan, $this->tanggal_dari, $this->tanggal_hingga, $this->user_id);
@@ -116,7 +94,7 @@ class Laporan extends Page
 
     protected function getViewData(): array
     {
-        $mahasiswaList = User::role('mahasiswa')->get();
+        $mahasiswaList = User::mahasiswa()->get();
 
         // Preview stats
         $reportService = new ReportService();

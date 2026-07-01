@@ -26,7 +26,7 @@ class CategoryPieChart extends ChartWidget
         $isMahasiswa = $user->isMahasiswa();
         $cacheKey = 'chart_category_' . ($isMahasiswa ? 'user_' . $user->id : 'admin');
 
-        return Cache::remember($cacheKey, 300, function () use ($isMahasiswa, $user) {
+        return Cache::remember($cacheKey, 3600, function () use ($isMahasiswa, $user) {
             $query = Logbook::query();
             if ($isMahasiswa) {
                 $query->where('user_id', $user->id);

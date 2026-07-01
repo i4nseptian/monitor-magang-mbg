@@ -2,9 +2,10 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\InternshipSetting;
+use App\Models\Logbook;
 use App\Models\Project;
 use App\Models\Target;
+use App\Helpers\InternshipHelper;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,9 @@ class Dashboard extends BaseDashboard
             \App\Filament\Widgets\MonthlyActivityChart::class,
             \App\Filament\Widgets\MemberActivityChart::class,
             \App\Filament\Widgets\TodayActivities::class,
+            \App\Filament\Widgets\ActivityHeatmap::class,
+            \App\Filament\Widgets\QuickActions::class,
+            \App\Filament\Widgets\MoodAnalytics::class,
         ];
     }
 
@@ -41,20 +45,11 @@ class Dashboard extends BaseDashboard
     public function getHeader(): ?\Illuminate\Contracts\View\View
     {
         $user = Auth::user();
-        $tglMulaiStr = InternshipSetting::getValue('tanggal_mulai', '2026-06-08');
-        $tglSelesaiStr = InternshipSetting::getValue('tanggal_selesai', '2026-08-28');
-        $tglMulai = Carbon::parse($tglMulaiStr);
-        $tglSelesai = Carbon::parse($tglSelesaiStr);
+        $progress = InternshipHelper::getProgress();
+        $hariKe = $progress['hariKe'];
+        $totalHari = $progress['totalHari'];
+        $hariTersisa = $progress['hariTersisa'];
         $now = Carbon::now();
-
-        $totalHari = (int) $tglMulai->diffInDays($tglSelesai) + 1;
-        if ($now->lt($tglMulai)) {
-            $hariKe = 0;
-        } elseif ($now->gt($tglSelesai)) {
-            $hariKe = $totalHari;
-        } else {
-            $hariKe = (int) $tglMulai->diffInDays($now) + 1;
-        }
 
         $roleLabel = match (true) {
             $user->isAdmin() => 'Super Admin',
@@ -63,12 +58,9 @@ class Dashboard extends BaseDashboard
             default => 'Pengguna',
         };
 
-        // Deadline data: upcoming targets & projects nearing deadline
-        $hariTersisa = max(0, $totalHari - $hariKe);
         $deadlines = collect();
 
         if (!$user->isMahasiswa()) {
-            // Mentor/Admin: ambil semua target dengan deadline
             $upcomingTargets = Target::with('user:id,name')
                 ->whereNotNull('target_date')
                 ->where('target_date', '>=', $now->toDateString())
@@ -128,6 +120,23 @@ class Dashboard extends BaseDashboard
 
         $deadlines = $deadlines->sortBy('remaining_days')->take(5);
 
+        $streak = 0;
+        if ($user->isMahasiswa()) {
+            $logbookDates = Logbook::where('user_id', $user->id)
+                ->selectRaw('DISTINCT DATE(tanggal) as tgl')
+                ->orderByDesc('tgl')
+                ->pluck('tgl');
+            $today = Carbon::today();
+            foreach ($logbookDates as $date) {
+                if (Carbon::parse($date)->eq($today)) {
+                    $streak++;
+                    $today->subDay();
+                } else {
+                    break;
+                }
+            }
+        }
+
         return view('filament.pages.dashboard-header', [
             'user' => $user,
             'roleLabel' => $roleLabel,
@@ -135,6 +144,7 @@ class Dashboard extends BaseDashboard
             'hariTersisa' => $hariTersisa,
             'totalHari' => $totalHari,
             'deadlines' => $deadlines,
+            'streak' => $streak,
         ]);
     }
 }

@@ -30,7 +30,7 @@
             </div>
         @else
             {{-- Activity list — Metronic clean divide --}}
-            <div class="max-h-[420px] space-y-2 overflow-y-auto pr-1">
+            <div class="max-h-[320px] sm:max-h-[420px] space-y-2 overflow-y-auto pr-1">
                 @foreach ($activities as $activity)
                     <div class="flex items-start gap-3 rounded-lg border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/40 p-3 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/30">
                         <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-indigo-50 dark:bg-indigo-950/40 text-xs font-semibold tabular-nums text-indigo-600 dark:text-indigo-400">

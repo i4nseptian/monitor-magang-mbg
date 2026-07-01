@@ -28,16 +28,14 @@ class DashboardAkhir extends Page
     public array $skillData = [];
     public array $categoryData = [];
     public array $moodData = [];
-    public array $attendanceData = [];
     public array $weeklyLogbookData = [];
-    public array $topLogbooks = [];
 
     public function mount(): void
     {
         $userId = Auth::user()->isMahasiswa() ? Auth::id() : null;
         $cacheKey = 'dashboard_akhir_' . ($userId ?? 'all');
 
-        $cached = Cache::remember($cacheKey, 300, function () use ($userId) {
+        $cached = Cache::remember($cacheKey, 3600, function () use ($userId) {
             $reportService = new ReportService();
             $finalStats = $reportService->getFinalStats($userId);
 
@@ -87,14 +85,7 @@ class DashboardAkhir extends Page
                 'values' => $weeklyValues,
             ];
 
-            $topLogbooks = Logbook::where($base)
-                ->with('user:id,name')
-                ->orderByDesc('tanggal')
-                ->limit(10)
-                ->get()
-                ->toArray();
-
-            return compact('finalStats', 'skillData', 'categoryData', 'moodData', 'weeklyLogbookData', 'topLogbooks');
+            return compact('finalStats', 'skillData', 'categoryData', 'moodData', 'weeklyLogbookData');
         });
 
         $this->finalStats = $cached['finalStats'];
@@ -102,6 +93,5 @@ class DashboardAkhir extends Page
         $this->categoryData = $cached['categoryData'];
         $this->moodData = $cached['moodData'];
         $this->weeklyLogbookData = $cached['weeklyLogbookData'];
-        $this->topLogbooks = $cached['topLogbooks'];
     }
 }

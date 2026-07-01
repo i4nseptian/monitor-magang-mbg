@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     <div class="space-y-6">
         
-        <div class="flex items-center justify-between rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-gray-900/80 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300">
+        <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-gray-900/80 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300">
             <h2 class="flex items-center gap-3 text-base sm:text-lg font-bold text-slate-800 dark:text-white font-display">
                 <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-md">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -10,9 +10,20 @@
                 </div>
                 <span class="truncate">{{ $currentMonthName }}</span>
             </h2>
-            <div class="flex shrink-0 items-center gap-1.5">
-                <x-filament::button wire:click="prevMonth" color="gray" size="sm" icon="heroicon-m-chevron-left" class="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl" />
-                <x-filament::button wire:click="nextMonth" color="gray" size="sm" icon="heroicon-m-chevron-right" class="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl" />
+            <div class="flex shrink-0 items-center gap-3">
+                @if(!auth()->user()->isMahasiswa())
+                    <select wire:model.live="selectedUserId"
+                        class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-xs font-semibold text-slate-800 dark:text-white shadow-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
+                        <option value="">Semua Mahasiswa</option>
+                        @foreach($mahasiswaList as $mhs)
+                            <option value="{{ $mhs->id }}">{{ $mhs->name }}</option>
+                        @endforeach
+                    </select>
+                @endif
+                <div class="flex items-center gap-1.5">
+                    <x-filament::button wire:click="prevMonth" color="gray" size="sm" icon="heroicon-m-chevron-left" class="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl" />
+                    <x-filament::button wire:click="nextMonth" color="gray" size="sm" icon="heroicon-m-chevron-right" class="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl" />
+                </div>
             </div>
         </div>
 
@@ -55,16 +66,18 @@
                         
                         <div class="flex-1 space-y-1 overflow-y-auto max-h-[80px] pr-0.5 scrollbar-thin">
                             @foreach ($day['logbooks'] as $log)
-                                <div class="truncate rounded-lg border border-brand-100 dark:border-brand-950 bg-brand-50/60 dark:bg-brand-950/30 px-2 py-1 text-[9px] font-semibold text-brand-700 dark:text-brand-300 transition-colors hover:border-brand-300 dark:hover:border-brand-800 hover:bg-brand-50 dark:hover:bg-brand-950/40"
-                                     title="{{ $log->judul_kegiatan }} ({{ $log->user->name }})">
+                                <a href="{{ \App\Filament\Resources\LogbookResource::getUrl('edit', ['record' => $log->id]) }}"
+                                   class="block truncate rounded-lg border border-brand-100 dark:border-brand-950 bg-brand-50/60 dark:bg-brand-950/30 px-2 py-1 text-[9px] font-semibold text-brand-700 dark:text-brand-300 transition-colors hover:border-brand-300 dark:hover:border-brand-800 hover:bg-brand-50 dark:hover:bg-brand-950/40"
+                                   title="{{ $log->judul_kegiatan }} ({{ $log->user->name }})">
                                     {{ $log->judul_kegiatan }}
-                                </div>
+                                </a>
                             @endforeach
                             @foreach ($day['documentations'] as $doc)
-                                <div class="truncate rounded-lg border border-emerald-100 dark:border-emerald-950 bg-emerald-50/50 dark:bg-emerald-950/20 px-2 py-1 text-[9px] font-semibold text-emerald-700 dark:text-emerald-300 transition-colors hover:border-emerald-300 dark:hover:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
-                                     title="Dokumentasi: {{ $doc->judul }}">
-                                    <span class="mr-0.5">📷</span>{{ $doc->judul }}
-                                </div>
+                                <a href="{{ \App\Filament\Resources\DocumentationResource::getUrl('edit', ['record' => $doc->id]) }}"
+                                   class="block truncate rounded-lg border border-emerald-100 dark:border-emerald-950 bg-emerald-50/50 dark:bg-emerald-950/20 px-2 py-1 text-[9px] font-semibold text-emerald-700 dark:text-emerald-300 transition-colors hover:border-emerald-300 dark:hover:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
+                                   title="Dokumentasi: {{ $doc->judul }}">
+                                    <svg class="mr-0.5 inline h-3 w-3 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"/></svg>{{ $doc->judul }}
+                                </a>
                             @endforeach
                         </div>
                     </div>
@@ -114,22 +127,27 @@
                                 @else
                                     <div class="space-y-2">
                                         @foreach ($day['logbooks'] as $log)
-                                            <div class="flex items-start gap-2.5 rounded-xl border border-brand-50 dark:border-brand-950/40 bg-brand-50/30 dark:bg-brand-950/20 p-2.5">
+                                            <a href="{{ \App\Filament\Resources\LogbookResource::getUrl('edit', ['record' => $log->id]) }}"
+                                               class="flex items-start gap-2.5 rounded-xl border border-brand-50 dark:border-brand-950/40 bg-brand-50/30 dark:bg-brand-950/20 p-2.5 transition-colors hover:border-brand-300 dark:hover:border-brand-800">
                                                 <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-600"></span>
                                                 <div class="min-w-0 flex-1">
                                                     <p class="text-xs font-bold text-slate-800 dark:text-slate-200">{{ $log->judul_kegiatan }}</p>
                                                     <p class="text-[9px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{{ $log->user->name }} · {{ $log->jam_mulai->format('H:i') }}–{{ $log->jam_selesai->format('H:i') }}</p>
                                                 </div>
-                                            </div>
+                                            </a>
                                         @endforeach
                                         @foreach ($day['documentations'] as $doc)
-                                            <div class="flex items-start gap-2.5 rounded-xl border border-emerald-50 dark:border-emerald-950/30 bg-emerald-50/20 dark:bg-emerald-950/10 p-2.5">
+                                            <a href="{{ \App\Filament\Resources\DocumentationResource::getUrl('edit', ['record' => $doc->id]) }}"
+                                               class="flex items-start gap-2.5 rounded-xl border border-emerald-50 dark:border-emerald-950/30 bg-emerald-50/20 dark:bg-emerald-950/10 p-2.5 transition-colors hover:border-emerald-300 dark:hover:border-emerald-800">
                                                 <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500"></span>
                                                 <div class="min-w-0 flex-1">
-                                                    <p class="text-xs font-bold text-slate-800 dark:text-slate-200">📷 {{ $doc->judul }}</p>
+                                                    <p class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1">
+                                <svg class="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"/></svg>
+                                {{ $doc->judul }}
+                            </p>
                                                     <p class="text-[9px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{{ $doc->user->name }}</p>
                                                 </div>
-                                            </div>
+                                            </a>
                                         @endforeach
                                     </div>
                                 @endif

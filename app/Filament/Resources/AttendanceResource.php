@@ -32,7 +32,7 @@ class AttendanceResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('user_id')
                             ->label('Nama Mahasiswa')
-                            ->relationship('user', 'name', fn (Builder $query) => $query->role('mahasiswa'))
+                            ->relationship('user', 'name', fn (Builder $query) => $query->mahasiswa())
                             ->required()
                             ->searchable()
                             ->preload()
@@ -117,7 +117,7 @@ class AttendanceResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('user_id')
                     ->label('Mahasiswa')
-                    ->relationship('user', 'name', fn (Builder $query) => $query->role('mahasiswa'))
+                    ->relationship('user', 'name', fn (Builder $query) => $query->mahasiswa())
                     ->visible(fn () => !Auth::user()->isMahasiswa()),
 
                 Tables\Filters\SelectFilter::make('status')

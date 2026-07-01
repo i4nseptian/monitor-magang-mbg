@@ -42,7 +42,7 @@ class MentorNoteResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('user_id')
                             ->label('Mahasiswa Magang')
-                            ->relationship('mahasiswa', 'name', fn (Builder $query) => $query->role('mahasiswa'))
+                            ->relationship('mahasiswa', 'name', fn (Builder $query) => $query->mahasiswa())
                             ->required()
                             ->searchable()
                             ->preload()
@@ -123,7 +123,7 @@ class MentorNoteResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('user_id')
                     ->label('Mahasiswa')
-                    ->relationship('mahasiswa', 'name', fn (Builder $query) => $query->role('mahasiswa')),
+                    ->relationship('mahasiswa', 'name', fn (Builder $query) => $query->mahasiswa()),
 
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status Evaluasi')

@@ -22,8 +22,8 @@ class MemberActivityChart extends ChartWidget
 
     protected function getData(): array
     {
-        return Cache::remember('chart_member_activity', 300, function () {
-            $mahasiswaList = User::role('mahasiswa')->get(['id', 'name']);
+        return Cache::remember('chart_member_activity', 3600, function () {
+            $mahasiswaList = User::mahasiswa()->get(['id', 'name']);
             $mahasiswaIds = $mahasiswaList->pluck('id');
 
             $counts = Logbook::select('user_id', DB::raw('count(*) as total'))

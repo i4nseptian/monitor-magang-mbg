@@ -27,19 +27,27 @@ class WeeklyActivityChart extends ChartWidget
         $isMahasiswa = $user->isMahasiswa();
         $cacheKey = 'chart_weekly_' . ($isMahasiswa ? 'user_' . $user->id : 'admin');
 
-        return Cache::remember($cacheKey, 300, function () use ($isMahasiswa, $user) {
+        return Cache::remember($cacheKey, 3600, function () use ($isMahasiswa, $user) {
             $query = Logbook::query();
             if ($isMahasiswa) {
                 $query->where('user_id', $user->id);
             }
 
+            $driver = DB::getDriverName();
+
+            if ($driver === 'sqlite') {
+                $yearWeek = "CAST(strftime('%Y', tanggal) AS TEXT) || printf('%02d', CAST(strftime('%j', tanggal) AS INTEGER) / 7 + 1)";
+            } else {
+                $yearWeek = 'YEARWEEK(tanggal, 1)';
+            }
+
             $activities = $query->select(
-                DB::raw('YEARWEEK(tanggal, 1) as year_week'),
+                DB::raw("{$yearWeek} as year_week"),
                 DB::raw('MIN(tanggal) as week_start'),
                 DB::raw('count(*) as count')
             )
             ->whereYear('tanggal', now()->year)
-            ->groupBy(DB::raw('YEARWEEK(tanggal, 1)'))
+            ->groupBy(DB::raw($yearWeek))
             ->orderBy('week_start', 'asc')
             ->limit(12)
             ->get();

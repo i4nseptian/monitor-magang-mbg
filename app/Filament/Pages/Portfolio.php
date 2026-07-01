@@ -29,11 +29,7 @@ class Portfolio extends Page
 
     public function mount(): void
     {
-        $userId = Auth::user()->isMahasiswa() ? Auth::id() : null;
-
-        if (!$userId) {
-            $userId = Auth::id();
-        }
+        $userId = Auth::id();
 
         $user = User::with('member')->find($userId);
         $skills = SkillDevelopment::where('user_id', $userId)->get();

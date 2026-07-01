@@ -11,8 +11,8 @@ class WelcomeController extends Controller
 {
     public function __invoke()
     {
-        $data = Cache::remember('welcome_page_stats', 300, function () {
-            $mahasiswaList = User::role('mahasiswa')->with('member')->get();
+        $data = Cache::remember('welcome_page_stats', 3600, function () {
+            $mahasiswaList = User::mahasiswa()->with('member')->get();
             return [
                 'mahasiswaList' => $mahasiswaList,
                 'totalMahasiswa' => $mahasiswaList->count(),

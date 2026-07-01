@@ -70,12 +70,12 @@ class MemberResource extends Resource
 
                         Forms\Components\DatePicker::make('tanggal_mulai')
                             ->label('Mulai Magang')
-                            ->default('2026-06-08')
+                            ->default(config('intern.default_tanggal_mulai'))
                             ->required(),
 
                         Forms\Components\DatePicker::make('tanggal_selesai')
                             ->label('Selesai Magang')
-                            ->default('2026-08-28')
+                            ->default(config('intern.default_tanggal_selesai'))
                             ->required(),
 
                         Forms\Components\FileUpload::make('foto_profil')

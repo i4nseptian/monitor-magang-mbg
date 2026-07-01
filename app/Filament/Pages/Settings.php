@@ -34,8 +34,8 @@ class Settings extends Page
         abort_unless(Auth::user()->hasRole('super_admin'), 403);
 
         $this->nama_instansi = InternshipSetting::getValue('nama_instansi', 'Dinas Komunikasi dan Informatika Kota Makassar');
-        $this->tanggal_mulai = InternshipSetting::getValue('tanggal_mulai', '2026-06-08');
-        $this->tanggal_selesai = InternshipSetting::getValue('tanggal_selesai', '2026-08-28');
+        $this->tanggal_mulai = InternshipSetting::getValue('tanggal_mulai', config('intern.default_tanggal_mulai'));
+        $this->tanggal_selesai = InternshipSetting::getValue('tanggal_selesai', config('intern.default_tanggal_selesai'));
     }
 
     public function save(): void

@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Logbook;
 use App\Models\Documentation;
+use App\Models\User;
 use Filament\Pages\Page;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -25,12 +26,17 @@ class Kalender extends Page
     public int $currentMonth;
     public int $currentYear;
     public string $currentMonthName;
+    public ?int $selectedUserId = null;
 
     public function mount(): void
     {
         $this->currentMonth = Carbon::now()->month;
         $this->currentYear = Carbon::now()->year;
         $this->updateMonthName();
+
+        if (Auth::user()->isMahasiswa()) {
+            $this->selectedUserId = Auth::id();
+        }
     }
 
     public function prevMonth(): void
@@ -68,16 +74,14 @@ class Kalender extends Page
         $currentDay = $startOfWeek->copy();
 
         // Ambil data logbook & dokumentasi untuk bulan ini
-        $userId = Auth::user()->isMahasiswa() ? Auth::id() : null;
-
         $logbooks = Logbook::with('user')
-            ->when($userId, fn($q) => $q->where('user_id', $userId))
+            ->when($this->selectedUserId, fn($q) => $q->where('user_id', $this->selectedUserId))
             ->whereBetween('tanggal', [$startOfWeek->toDateString(), $endOfWeek->toDateString()])
             ->get()
             ->groupBy(fn($l) => $l->tanggal->format('Y-m-d'));
 
         $documentations = Documentation::with('user')
-            ->when($userId, fn($q) => $q->where('user_id', $userId))
+            ->when($this->selectedUserId, fn($q) => $q->where('user_id', $this->selectedUserId))
             ->whereBetween('tanggal', [$startOfWeek->toDateString(), $endOfWeek->toDateString()])
             ->get()
             ->groupBy(fn($d) => $d->tanggal->format('Y-m-d'));
@@ -113,6 +117,7 @@ class Kalender extends Page
             'days' => $days,
             'weeksGrouped' => $weeksGrouped,
             'weeks' => ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+            'mahasiswaList' => User::mahasiswa()->get(),
         ];
     }
 }

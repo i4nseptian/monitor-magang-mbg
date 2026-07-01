@@ -13,7 +13,9 @@ return new class extends Migration
             $table->string('mood')->nullable()->after('status');
         });
 
-        DB::statement("ALTER TABLE logbooks MODIFY COLUMN status VARCHAR(50) NOT NULL DEFAULT 'Draft'");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE logbooks MODIFY COLUMN status VARCHAR(50) NOT NULL DEFAULT 'Draft'");
+        }
     }
 
     public function down(): void
@@ -22,6 +24,8 @@ return new class extends Migration
             $table->dropColumn('mood');
         });
 
-        DB::statement("ALTER TABLE logbooks MODIFY COLUMN status ENUM('Selesai','Sedang Berjalan','Ditunda') NOT NULL DEFAULT 'Selesai'");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE logbooks MODIFY COLUMN status ENUM('Selesai','Sedang Berjalan','Ditunda') NOT NULL DEFAULT 'Selesai'");
+        }
     }
 };

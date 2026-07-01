@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     <div class="space-y-5">
         
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+        <div class="grid grid-cols-1 xs:grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4 lg:grid-cols-8">
             <x-stat-card label="Total Logbook" :value="$finalStats['total_logbook']" color="primary" 
                 icon='<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.232.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>' />
             <x-stat-card label="Foto Dokumentasi" :value="$finalStats['total_foto']" color="warning" 
@@ -72,7 +72,7 @@
                     <span class="kt-dot kt-dot-primary"></span>
                     Perkembangan Skill
                 </h4>
-                <div class="relative flex items-center justify-center h-[260px]">
+                <div class="relative flex items-center justify-center h-[200px] sm:h-[240px] lg:h-[260px]">
                     <canvas id="skillChart" class="max-h-full max-w-full"></canvas>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     <span class="kt-dot kt-dot-warning"></span>
                     Distribusi Kategori
                 </h4>
-                <div class="relative flex items-center justify-center h-[260px]">
+                <div class="relative flex items-center justify-center h-[200px] sm:h-[240px] lg:h-[260px]">
                     <canvas id="categoryChart" class="max-h-full max-w-full"></canvas>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                     <span class="kt-dot kt-dot-success"></span>
                     Distribusi Mood
                 </h4>
-                <div class="relative flex items-center justify-center h-[260px]">
+                <div class="relative flex items-center justify-center h-[200px] sm:h-[240px] lg:h-[260px]">
                     <canvas id="moodChart" class="max-h-full max-w-full"></canvas>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                     <span class="kt-dot kt-dot-info"></span>
                     Tren Logbook Mingguan
                 </h4>
-                <div class="relative flex items-center justify-center h-[260px]">
+                <div class="relative flex items-center justify-center h-[200px] sm:h-[240px] lg:h-[260px]">
                     <canvas id="weeklyChart" class="max-h-full max-w-full"></canvas>
                 </div>
             </div>
@@ -112,8 +112,8 @@
                     <span class="kt-dot kt-dot-primary"></span>
                     Detail Kategori Pekerjaan
                 </h4>
-                <div class="overflow-hidden rounded-lg border border-slate-100 dark:border-slate-800">
-                    <table class="w-full text-sm">
+                <div class="overflow-x-auto rounded-lg border border-slate-100 dark:border-slate-800">
+                    <table class="w-full text-sm whitespace-nowrap">
                         <thead>
                             <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                                 <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400">Nama Kategori</th>

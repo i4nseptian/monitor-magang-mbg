@@ -32,7 +32,7 @@ class TargetResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('user_id')
                             ->label('Nama Mahasiswa')
-                            ->relationship('user', 'name', fn (Builder $query) => $query->role('mahasiswa'))
+                            ->relationship('user', 'name', fn (Builder $query) => $query->mahasiswa())
                             ->required()
                             ->searchable()
                             ->preload()
